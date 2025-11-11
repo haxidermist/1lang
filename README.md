@@ -332,6 +332,28 @@ Comprehensive documentation available:
 - **[SYNTAX_METAPROGRAMMING.md](SYNTAX_METAPROGRAMMING.md)** - Technical design
 - **[ACCOMPLISHMENTS.md](ACCOMPLISHMENTS.md)** - Complete feature list
 
+### 📖 The 1 Programming Language Book
+
+A comprehensive book in the style of "The C Programming Language" by Kernighan & Ritchie:
+
+**[Read the Book →](ebook/THE-1-PROGRAMMING-LANGUAGE.md)**
+
+**Contents:**
+- **Chapter 1:** A Tutorial Introduction
+- **Chapter 2:** Types, Operators, and Expressions
+- **Chapter 3:** Control Flow
+- **Chapter 4:** Functions and Program Structure
+- **Chapter 5:** Programmable Syntax *(The Revolutionary Feature)*
+- **Chapter 6:** Self-Hosting and Meta-Compilation
+- **Appendix A:** Language Reference Manual
+
+The book includes:
+- Progressive examples building on each chapter
+- Complete, runnable code samples
+- Exercises at the end of each chapter
+- Precise language reference
+- ~150-200 pages of content
+
 ---
 
 ## Development Timeline
