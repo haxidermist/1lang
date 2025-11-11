@@ -1,0 +1,26 @@
+// test_braces.one - Test with explicit braces
+
+function test_loop:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    i = 0
+
+    while i < n: {
+      println(i)
+      i = i + 1
+    }
+
+    println("done")
+    return 0
+  }
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    test_loop(5)
+    return 0
+  }

@@ -1,0 +1,29 @@
+// test_simple.one - Simple test
+
+function test_loop:
+  inputs:
+    source: String
+  outputs:
+    result: Integer
+  implementation:
+    pos = 0
+    source_len = len(source)
+
+    while pos < source_len:
+      println("pos:")
+      println(pos)
+      c = char_at(source, pos)
+      println(c)
+      pos = pos + 1
+      println("after increment:")
+      println(pos)
+
+    return 0
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation:
+    s = "abc"
+    test_loop(s)
+    return 0

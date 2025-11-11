@@ -1,0 +1,21 @@
+// factorial.one - Factorial function
+
+function factorial:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation:
+    if n == 0:
+      return 1
+    else:
+      return n * factorial(n - 1)
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation:
+    result = factorial(5)
+    println("Factorial of 5 is:")
+    println(result)
+    return 0

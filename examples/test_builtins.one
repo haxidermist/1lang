@@ -1,0 +1,35 @@
+// test_builtins.one - Test built-in functions
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation:
+    // Test string functions
+    s = "Hello"
+    l = len(s)
+    println("Length of 'Hello':")
+    println(l)
+
+    // Test char_at
+    c = char_at(s, 1)
+    println("Character at index 1:")
+    println(c)
+
+    // Test is_digit
+    d = is_digit("5")
+    println("Is '5' a digit:")
+    println(d)
+
+    // Test is_alpha
+    a = is_alpha("A")
+    println("Is 'A' alpha:")
+    println(a)
+
+    // Test list functions
+    lst = [1, 2, 3]
+    lst2 = list_append(lst, 4)
+    v = list_get(lst2, 3)
+    println("List after append:")
+    println(v)
+
+    return 0

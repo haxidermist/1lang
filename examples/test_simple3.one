@@ -1,0 +1,25 @@
+// test_simple3.one - Test with explicit block ending
+
+function test_loop:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation:
+    i = 0
+
+    while i < n:
+      println(i)
+      i = i + 1
+      if i == i:
+        x = 0
+
+    println("done")
+    return 0
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation:
+    test_loop(5)
+    return 0

@@ -1,0 +1,22 @@
+// test_simple2.one - Simpler test without char_at
+
+function test_loop:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation:
+    i = 0
+
+    while i < n:
+      println(i)
+      i = i + 1
+
+    return 0
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation:
+    test_loop(5)
+    return 0

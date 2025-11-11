@@ -1,0 +1,382 @@
+// tokenizer.one - Lexical analyzer for the 1 language
+// Written in 1 itself - self-hosting!
+
+// Token type constants
+function TOKEN_IDENTIFIER:
+  outputs:
+    t: Integer
+  implementation: {
+    return 1
+  }
+
+function TOKEN_INTEGER:
+  outputs:
+    t: Integer
+  implementation: {
+    return 2
+  }
+
+function TOKEN_STRING:
+  outputs:
+    t: Integer
+  implementation: {
+    return 3
+  }
+
+function TOKEN_KEYWORD:
+  outputs:
+    t: Integer
+  implementation: {
+    return 4
+  }
+
+function TOKEN_OPERATOR:
+  outputs:
+    t: Integer
+  implementation: {
+    return 5
+  }
+
+function TOKEN_DELIMITER:
+  outputs:
+    t: Integer
+  implementation: {
+    return 6
+  }
+
+function TOKEN_NEWLINE:
+  outputs:
+    t: Integer
+  implementation: {
+    return 7
+  }
+
+function TOKEN_EOF:
+  outputs:
+    t: Integer
+  implementation: {
+    return 8
+  }
+
+// Check if character is whitespace
+function is_whitespace:
+  inputs:
+    c: String
+  outputs:
+    result: Integer
+  implementation: {
+    if str_eq(c, " "): {
+      return 1
+    }
+    if str_eq(c, "\t"): {
+      return 1
+    }
+    if str_eq(c, "\r"): {
+      return 1
+    }
+    return 0
+  }
+
+// Check if character is newline
+function is_newline:
+  inputs:
+    c: String
+  outputs:
+    result: Integer
+  implementation: {
+    return str_eq(c, "\n")
+  }
+
+// Check if character starts an identifier
+function is_alpha_char:
+  inputs:
+    c: String
+  outputs:
+    result: Integer
+  implementation: {
+    alpha = is_alpha(c)
+    if alpha == 1: {
+      return 1
+    }
+    return str_eq(c, "_")
+  }
+
+// Check if character continues an identifier
+function is_alnum_char:
+  inputs:
+    c: String
+  outputs:
+    result: Integer
+  implementation: {
+    alnum = is_alnum(c)
+    if alnum == 1: {
+      return 1
+    }
+    return str_eq(c, "_")
+  }
+
+// Check if string is a keyword
+function is_keyword:
+  inputs:
+    word: String
+  outputs:
+    result: Integer
+  implementation: {
+    if str_eq(word, "function"): {
+      return 1
+    }
+    if str_eq(word, "inputs"): {
+      return 1
+    }
+    if str_eq(word, "outputs"): {
+      return 1
+    }
+    if str_eq(word, "implementation"): {
+      return 1
+    }
+    if str_eq(word, "return"): {
+      return 1
+    }
+    if str_eq(word, "if"): {
+      return 1
+    }
+    if str_eq(word, "else"): {
+      return 1
+    }
+    if str_eq(word, "while"): {
+      return 1
+    }
+    if str_eq(word, "Integer"): {
+      return 1
+    }
+    if str_eq(word, "String"): {
+      return 1
+    }
+    return 0
+  }
+
+// Tokenize source code - returns token count
+// In a real implementation, this would return a list of tokens
+// For now, we'll print tokens as we find them
+function tokenize:
+  inputs:
+    source: String
+  outputs:
+    token_count: Integer
+  implementation: {
+    pos = 0
+    line = 1
+    column = 1
+    count = 0
+    source_len = len(source)
+
+    while pos < source_len: {
+      c = char_at(source, pos)
+
+      // Skip whitespace (not newlines)
+      ws = is_whitespace(c)
+      if ws == 1: {
+        column = column + 1
+        pos = pos + 1
+      } else: {
+        // Check for newline
+        nl = is_newline(c)
+        if nl == 1: {
+          println("TOKEN_NEWLINE")
+          count = count + 1
+          line = line + 1
+          column = 1
+          pos = pos + 1
+        } else: {
+          // Check for identifier or keyword
+          alpha = is_alpha_char(c)
+          if alpha == 1: {
+            start = pos
+
+            // Consume identifier
+            while pos < source_len: {
+              c2 = char_at(source, pos)
+              alnum = is_alnum_char(c2)
+              if alnum == 1: {
+                pos = pos + 1
+                column = column + 1
+              } else: {
+                break
+              }
+            }
+
+            // Extract lexeme
+            lexeme = substr(source, start, pos)
+
+            // Check if keyword
+            kw = is_keyword(lexeme)
+            if kw == 1: {
+              print("TOKEN_KEYWORD: ")
+              println(lexeme)
+            } else: {
+              print("TOKEN_IDENTIFIER: ")
+              println(lexeme)
+            }
+            count = count + 1
+
+          } else: {
+            // Check for digit
+            digit = is_digit(c)
+            if digit == 1: {
+              start = pos
+
+              // Consume digits
+              while pos < source_len: {
+                c2 = char_at(source, pos)
+                d = is_digit(c2)
+                if d == 1: {
+                  pos = pos + 1
+                  column = column + 1
+                } else: {
+                  break
+                }
+              }
+
+              // Extract number
+              num = substr(source, start, pos)
+              print("TOKEN_INTEGER: ")
+              println(num)
+              count = count + 1
+
+            } else: {
+              // Check for string literal
+              if str_eq(c, "\""): {
+                start = pos
+                pos = pos + 1  // skip opening quote
+                column = column + 1
+
+                // Find closing quote
+                while pos < source_len: {
+                  c2 = char_at(source, pos)
+                  if str_eq(c2, "\""): {
+                    pos = pos + 1
+                    column = column + 1
+                    break
+                  }
+                  pos = pos + 1
+                  column = column + 1
+                }
+
+                str_lit = substr(source, start, pos)
+                print("TOKEN_STRING: ")
+                println(str_lit)
+                count = count + 1
+
+              } else: {
+                // Check for colon
+                if str_eq(c, ":"): {
+                  println("TOKEN_COLON")
+                  count = count + 1
+                  pos = pos + 1
+                  column = column + 1
+                } else: {
+                  // Check for braces
+                  if str_eq(c, "{"): {
+                    println("TOKEN_LBRACE")
+                    count = count + 1
+                    pos = pos + 1
+                    column = column + 1
+                  } else: {
+                    if str_eq(c, "}"): {
+                      println("TOKEN_RBRACE")
+                      count = count + 1
+                      pos = pos + 1
+                      column = column + 1
+                    } else: {
+                      // Check for operators
+                      if str_eq(c, "="): {
+                        println("TOKEN_EQUALS")
+                        count = count + 1
+                        pos = pos + 1
+                        column = column + 1
+                      } else: {
+                        if str_eq(c, "+"): {
+                          println("TOKEN_PLUS")
+                          count = count + 1
+                          pos = pos + 1
+                          column = column + 1
+                        } else: {
+                          if str_eq(c, "-"): {
+                            println("TOKEN_MINUS")
+                            count = count + 1
+                            pos = pos + 1
+                            column = column + 1
+                          } else: {
+                            if str_eq(c, "("): {
+                              println("TOKEN_LPAREN")
+                              count = count + 1
+                              pos = pos + 1
+                              column = column + 1
+                            } else: {
+                              if str_eq(c, ")"): {
+                                println("TOKEN_RPAREN")
+                                count = count + 1
+                                pos = pos + 1
+                                column = column + 1
+                              } else: {
+                                // Skip unknown character
+                                print("UNKNOWN: ")
+                                println(c)
+                                pos = pos + 1
+                                column = column + 1
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // EOF token
+    println("TOKEN_EOF")
+    count = count + 1
+
+    return count
+  }
+
+// Test the tokenizer
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    println("1 Language Tokenizer")
+    println("===================")
+    println("")
+
+    // Test code
+    code = "function add:
+  inputs:
+    x: Integer
+    y: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    return x + y
+  }"
+
+    println("Tokenizing:")
+    println(code)
+    println("")
+    println("Tokens:")
+    println("-------")
+
+    count = tokenize(code)
+
+    println("")
+    print("Total tokens: ")
+    println(count)
+
+    return 0
+  }
