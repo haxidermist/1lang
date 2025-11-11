@@ -336,7 +336,9 @@ Comprehensive documentation available:
 
 A comprehensive book in the style of "The C Programming Language" by Kernighan & Ritchie:
 
-**[Read the Book →](ebook/THE-1-PROGRAMMING-LANGUAGE.md)**
+**[📖 Read the Book Online (HTML) →](https://haxidermist.github.io/1lang/ebook/)** ⭐ Best Experience
+
+**[📄 Read on GitHub (Markdown) →](ebook/THE-1-PROGRAMMING-LANGUAGE.md)**
 
 **Contents:**
 - **Chapter 1:** A Tutorial Introduction

@@ -1,0 +1,353 @@
+/* The 1 Programming Language - eBook Stylesheet */
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #2c3e50;
+  --heading-color: #1a252f;
+  --code-bg: #f5f5f5;
+  --code-border: #ddd;
+  --link-color: #3498db;
+  --link-hover: #2980b9;
+  --accent-color: #e74c3c;
+  --sidebar-bg: #f8f9fa;
+  --border-color: #dee2e6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  line-height: 1.8;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Typography */
+h1 {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 2.5em;
+  color: var(--heading-color);
+  margin: 1.5em 0 0.5em 0;
+  font-weight: 700;
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.8em;
+  color: var(--heading-color);
+  margin: 1.3em 0 0.5em 0;
+  font-weight: 600;
+}
+
+h3 {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.4em;
+  color: var(--heading-color);
+  margin: 1.2em 0 0.5em 0;
+  font-weight: 600;
+}
+
+h4 {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.1em;
+  color: var(--heading-color);
+  margin: 1em 0 0.5em 0;
+  font-weight: 600;
+}
+
+p {
+  margin: 1em 0;
+  text-align: justify;
+}
+
+/* Links */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* Code blocks */
+pre {
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 4px;
+  padding: 15px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+code {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  background-color: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Lists */
+ul, ol {
+  margin: 1em 0 1em 2em;
+}
+
+li {
+  margin: 0.5em 0;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid var(--accent-color);
+  padding-left: 20px;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: #555;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--sidebar-bg);
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* Table of Contents */
+.toc {
+  background-color: var(--sidebar-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px 30px;
+  margin: 2em 0;
+}
+
+.toc h2 {
+  margin-top: 0;
+  color: var(--accent-color);
+}
+
+.toc ul {
+  list-style-type: none;
+  margin-left: 0;
+}
+
+.toc li {
+  margin: 0.8em 0;
+}
+
+.toc a {
+  font-size: 1.05em;
+  font-weight: 500;
+}
+
+/* Header */
+.book-header {
+  text-align: center;
+  margin-bottom: 3em;
+  padding-bottom: 2em;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.book-title {
+  font-size: 3em;
+  color: var(--accent-color);
+  margin-bottom: 0.3em;
+  border: none;
+}
+
+.book-subtitle {
+  font-size: 1.3em;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 1em;
+}
+
+.book-meta {
+  font-size: 0.95em;
+  color: #888;
+}
+
+/* Chapter headers */
+.chapter {
+  page-break-before: always;
+  margin-top: 3em;
+  padding-top: 2em;
+  border-top: 2px solid var(--border-color);
+}
+
+.chapter:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.chapter-number {
+  font-size: 0.8em;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5em;
+}
+
+/* Exercises section */
+.exercises {
+  background-color: #fffbf0;
+  border-left: 4px solid #f39c12;
+  padding: 20px;
+  margin: 2em 0;
+}
+
+.exercises h2, .exercises h3 {
+  color: #f39c12;
+}
+
+/* Highlights and callouts */
+.important {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 15px;
+  margin: 1.5em 0;
+}
+
+.note {
+  background-color: #d1ecf1;
+  border-left: 4px solid #17a2b8;
+  padding: 15px;
+  margin: 1.5em 0;
+}
+
+/* Navigation */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 3em 0;
+  padding: 1em 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.nav-button {
+  padding: 10px 20px;
+  background-color: var(--link-color);
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.nav-button:hover {
+  background-color: var(--link-hover);
+  text-decoration: none;
+}
+
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2em 0;
+}
+
+/* Print styles */
+@media print {
+  body {
+    max-width: 100%;
+    font-size: 12pt;
+  }
+
+  .chapter {
+    page-break-before: always;
+  }
+
+  pre {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+  }
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+  body {
+    padding: 20px 15px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  .book-title {
+    font-size: 2.2em;
+  }
+
+  pre {
+    font-size: 0.8em;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Back to top button */
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--accent-color);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 1.2em;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.back-to-top:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* Syntax highlighting hint */
+.keyword { color: #0000ff; font-weight: bold; }
+.string { color: #a31515; }
+.comment { color: #008000; font-style: italic; }
+.number { color: #098658; }

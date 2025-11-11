@@ -1,0 +1,29 @@
+# GitHub Pages Configuration for 1 Programming Language
+
+# Theme
+theme: null
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+# Exclude files from processing
+exclude:
+  - bootstrap/
+  - compiler/
+  - examples/
+  - .gitignore
+  - LICENSE
+  - publish_to_github.sh
+  - publish_to_github.bat
+
+# Site settings
+title: The 1 Programming Language
+description: A revolutionary programming language with programmable syntax
+url: https://haxidermist.github.io
+baseurl: /1lang
+
+# GitHub Pages will serve from /docs directory
+# Configure this in repository settings: Settings > Pages > Source > docs

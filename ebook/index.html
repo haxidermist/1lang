@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 1 Programming Language - Complete Book</title>
+    <link rel="stylesheet" href="book.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        #loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+            color: #666;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #e74c3c;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading The 1 Programming Language...</p>
+    </div>
+    <div id="content" style="display:none;"></div>
+    <a href="#top" class="back-to-top" id="backToTop" style="display:none;">↑</a>
+
+    <script>
+        // Configure marked
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: true
+        });
+
+        // Book chapters in order
+        const chapters = [
+            { file: '00-preface.md', title: 'Preface' },
+            { file: '01-tutorial-introduction.md', title: 'Chapter 1: A Tutorial Introduction' },
+            { file: '02-types-operators-expressions.md', title: 'Chapter 2: Types, Operators, and Expressions' },
+            { file: '03-control-flow.md', title: 'Chapter 3: Control Flow' },
+            { file: '04-functions-program-structure.md', title: 'Chapter 4: Functions and Program Structure' },
+            { file: '05-programmable-syntax.md', title: 'Chapter 5: Programmable Syntax' },
+            { file: '06-self-hosting.md', title: 'Chapter 6: Self-Hosting and Meta-Compilation' },
+            { file: 'appendix-reference.md', title: 'Appendix A: Language Reference Manual' }
+        ];
+
+        async function loadChapter(file) {
+            try {
+                const response = await fetch(file);
+                if (!response.ok) throw new Error(`Failed to load ${file}`);
+                return await response.text();
+            } catch (error) {
+                console.error(`Error loading ${file}:`, error);
+                return `## Error\n\nFailed to load ${file}. Please check that the file exists.`;
+            }
+        }
+
+        async function loadBook() {
+            const contentDiv = document.getElementById('content');
+            const loadingDiv = document.getElementById('loading');
+
+            // Create book header
+            let html = `
+                <div id="top" class="book-header">
+                    <h1 class="book-title">The 1 Programming Language</h1>
+                    <p class="book-subtitle">A Revolutionary Language with Programmable Syntax</p>
+                    <p class="book-meta">In the style of "The C Programming Language" by Kernighan & Ritchie</p>
+                </div>
+
+                <div class="toc">
+                    <h2>Table of Contents</h2>
+                    <ul>
+                        ${chapters.map((ch, idx) =>
+                            `<li><a href="#chapter-${idx}">${ch.title}</a></li>`
+                        ).join('')}
+                    </ul>
+                </div>
+            `;
+
+            // Load and render each chapter
+            for (let i = 0; i < chapters.length; i++) {
+                const chapter = chapters[i];
+                const markdown = await loadChapter(chapter.file);
+                const rendered = marked.parse(markdown);
+
+                html += `
+                    <div class="chapter" id="chapter-${i}">
+                        ${rendered}
+                    </div>
+                `;
+
+                // Add navigation buttons between chapters
+                if (i < chapters.length - 1) {
+                    html += `
+                        <div class="nav-buttons">
+                            ${i > 0 ? `<a href="#chapter-${i-1}" class="nav-button">← Previous</a>` : '<span></span>'}
+                            <a href="#top" class="nav-button">↑ Top</a>
+                            <a href="#chapter-${i+1}" class="nav-button">Next →</a>
+                        </div>
+                    `;
+                }
+            }
+
+            // Add final navigation
+            html += `
+                <div class="nav-buttons">
+                    <a href="#chapter-${chapters.length-2}" class="nav-button">← Previous</a>
+                    <a href="#top" class="nav-button">↑ Top</a>
+                    <span></span>
+                </div>
+            `;
+
+            // Add footer
+            html += `
+                <hr>
+                <div style="text-align: center; padding: 2em; color: #888;">
+                    <p><strong>The 1 Programming Language</strong></p>
+                    <p>Version 1.0 • 2025</p>
+                    <p><a href="https://github.com/haxidermist/1lang">GitHub Repository</a></p>
+                    <p style="margin-top: 1em; font-style: italic;">"In 1, code is data, syntax is data, and now 1 can compile 1."</p>
+                </div>
+            `;
+
+            contentDiv.innerHTML = html;
+            loadingDiv.style.display = 'none';
+            contentDiv.style.display = 'block';
+
+            // Show back-to-top button on scroll
+            window.addEventListener('scroll', function() {
+                const backToTop = document.getElementById('backToTop');
+                if (window.pageYOffset > 300) {
+                    backToTop.style.display = 'block';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });
+        }
+
+        // Load the book when page loads
+        window.addEventListener('DOMContentLoaded', loadBook);
+    </script>
+</body>
+</html>
