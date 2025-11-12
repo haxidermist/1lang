@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 1 Programming Language - Complete Book</title>
+    <link rel="stylesheet" href="book.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+    <a href="#top" class="back-to-top" id="backToTop" style="display:none;">↑</a>
+
+    <script>
+        // All markdown content embedded directly
+        const markdownContent = `# Preface
+
+[PLACEHOLDER - Content will be embedded here]
+
+The 1 programming language is a new language designed with a revolutionary premise: that syntax itself should be programmable.
+
+This book is meant to help the reader learn how to program in 1.
+
+---
+
+# Chapter 1: A Tutorial Introduction
+
+Let us begin with a quick introduction to 1...
+
+[Continue with all chapters...]
+`;
+
+        // Configure marked
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: true,
+            highlight: function(code, lang) {
+                return code; // Basic highlighting
+            }
+        });
+
+        // Render the content
+        function renderBook() {
+            const contentDiv = document.getElementById('content');
+
+            // Create book header
+            let html = `
+                <div id="top" class="book-header">
+                    <h1 class="book-title">The 1 Programming Language</h1>
+                    <p class="book-subtitle">A Revolutionary Language with Programmable Syntax</p>
+                    <p class="book-meta">In the style of "The C Programming Language" by Kernighan & Ritchie</p>
+                </div>
+            `;
+
+            // Render markdown
+            html += marked.parse(markdownContent);
+
+            // Add footer
+            html += `
+                <hr>
+                <div style="text-align: center; padding: 2em; color: #888;">
+                    <p><strong>The 1 Programming Language</strong></p>
+                    <p>Version 1.0 • 2025</p>
+                    <p><a href="https://github.com/haxidermist/1lang">GitHub Repository</a></p>
+                    <p style="margin-top: 1em; font-style: italic;">"In 1, code is data, syntax is data, and now 1 can compile 1."</p>
+                </div>
+            `;
+
+            contentDiv.innerHTML = html;
+
+            // Show back-to-top button on scroll
+            window.addEventListener('scroll', function() {
+                const backToTop = document.getElementById('backToTop');
+                if (window.pageYOffset > 300) {
+                    backToTop.style.display = 'block';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });
+        }
+
+        // Render when page loads
+        window.addEventListener('DOMContentLoaded', renderBook);
+    </script>
+</body>
+</html>

@@ -5,151 +5,2786 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The 1 Programming Language - Complete Book</title>
     <link rel="stylesheet" href="book.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        #loading {
-            text-align: center;
-            padding: 50px;
-            font-size: 1.2em;
-            color: #666;
-        }
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #e74c3c;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
 </head>
 <body>
-    <div id="loading">
-        <div class="spinner"></div>
-        <p>Loading The 1 Programming Language...</p>
+    <div id="top" class="book-header">
+        <h1 class="book-title">The 1 Programming Language</h1>
+        <p class="book-subtitle">A Revolutionary Language with Programmable Syntax</p>
+        <p class="book-meta">In the style of "The C Programming Language" by Kernighan & Ritchie</p>
     </div>
-    <div id="content" style="display:none;"></div>
+
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#chapter-0">Preface</a></li>
+            <li><a href="#chapter-1">Chapter 1: A Tutorial Introduction</a></li>
+            <li><a href="#chapter-2">Chapter 2: Types, Operators, and Expressions</a></li>
+            <li><a href="#chapter-3">Chapter 3: Control Flow</a></li>
+            <li><a href="#chapter-4">Chapter 4: Functions and Program Structure</a></li>
+            <li><a href="#chapter-5">Chapter 5: Programmable Syntax</a></li>
+            <li><a href="#chapter-6">Chapter 6: Self-Hosting and Meta-Compilation</a></li>
+            <li><a href="#chapter-7">Appendix A: Language Reference Manual</a></li>
+        </ul>
+    </div>
+
+
+    <div class="chapter" id="chapter-0">
+<h1>Preface</h1>
+
+<p>The 1 programming language is a new language designed with a revolutionary premise: that syntax itself should be programmable. Where traditional languages fix their notation at design time, 1 allows programs to manipulate and extend the very syntax they are written in.</p>
+
+<p>This book is meant to help the reader learn how to program in 1. It contains a tutorial introduction to get started, separate chapters on each major feature, and a reference manual. Most of the presentation is based on reading, writing, and revising examples, rather than on mere statements of rules. For the most part, the examples are complete, real programs rather than isolated fragments. All examples have been tested directly from the text, which is in machine-readable form.</p>
+
+<p>The book is organized as follows. Chapter 1 is a tutorial introduction that covers the major features of 1 through practical examples. The purpose of this chapter is to show the essential elements of the language in real programs, but without getting bogged down in details, rules, and exceptions. The tutorial does assume a basic familiarity with programming concepts; there is no explanation of computers, of compilation, or of the meaning of terms like variable and assignment statement.</p>
+
+<p>Chapters 2 through 4 discuss various aspects of 1 in more detail, and rather more formally, than does Chapter 1. Chapter 2 deals with the basic data types, operators and expressions. Chapter 3 treats control flow: if-else, while, for, and the ensure-otherwise construct. Chapter 4 covers functions and program structure—external variables, scope rules, and so on.</p>
+
+<p>Chapter 5 discusses the key innovation of 1: programmable syntax. This chapter shows how block delimiters can be treated as data, how syntax can be extended and modified, and how programs can manipulate their own notation.</p>
+
+<p>Chapter 6 describes the self-hosting compiler—how 1 can compile itself, and what this means for the language and its future development.</p>
+
+<p>The Appendix is a language reference manual that provides a precise definition of the language. The official syntax is described here, though the programmable nature of 1 means that programs can define their own syntax extensions.</p>
+
+<h2>Acknowledgments</h2>
+
+<p>The 1 language emerged from an intensive collaboration between human insight and artificial intelligence. The bootstrap compiler was developed in Python to demonstrate the feasibility of the core ideas. The self-hosting components prove that the language can process itself.</p>
+
+<p>This book follows the model established by Brian W. Kernighan and Dennis M. Ritchie in their classic work, "The C Programming Language." Their clear, practical approach to teaching a programming language through examples has proven timeless and is emulated here.</p>
+
+<h2>A Note on Exercises</h2>
+
+<p>Each chapter concludes with a series of exercises. These exercises suggest practical programs of varying difficulty, from simple applications of material in the chapter to more challenging problems that extend concepts or introduce new ideas. Solutions to exercises are not provided; working through them is the best way to learn the language.</p>
+
+<hr>
+
+<p><strong>Let us begin.</strong></p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <span></span>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <a href="#chapter-1" class="nav-button">Next →</a>
+    </div>
+
+
+    <div class="chapter" id="chapter-1">
+<h1>Chapter 1: A Tutorial Introduction</h1>
+
+<p>Let us begin with a quick introduction to 1. Our aim is to show the essential elements of the language in real programs, but without getting bogged down in details, formalities, and exceptions. At this point, we are not trying to be complete or even precise (except in the examples). We want to get you as quickly as possible to the point where you can write useful programs, and to do that we have to concentrate on the basics: types, functions, control flow, and the distinctive feature of 1—programmable syntax. This chapter is meant to be an introduction, not a reference manual. Subsequent chapters will elaborate on the ideas presented here.</p>
+
+<p>The best way to learn a new programming language is to write programs in it. The typical program to start with is one that prints "Hello, World!" on the screen. In 1, this is:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    println(&quot;Hello, World!&quot;)
+    return 0
+  }
+</code></pre>
+
+<p>Just type this into a file named <code>hello.one</code>, then compile and run it with:</p>
+
+<pre><code>
+python bootstrap/compiler.py hello.one --run
+</code></pre>
+
+<p>The program will print:</p>
+
+<pre><code>
+Hello, World!
+</code></pre>
+
+<h2>1.1 Getting Started</h2>
+
+<p>A 1 program consists of function definitions. The mandatory starting point is the function named <code>main</code>. The <code>main</code> function specifies its outputs (in this case, an integer exit code), and contains an <code>implementation</code> block that defines what the function does.</p>
+
+<p>Every function in 1 declares its inputs and outputs explicitly. Even a simple program like "Hello, World" must specify that it returns an integer exit code. This explicitness is a fundamental design principle of 1.</p>
+
+<p>The statement</p>
+
+<pre><code>
+println(&quot;Hello, World!&quot;)
+</code></pre>
+
+<p>calls the built-in function <code>println</code>, which prints its argument followed by a newline. The function <code>println</code> is one of several built-in functions provided by the 1 environment.</p>
+
+<p>Notice the braces <code>{ }</code> around the implementation. These are block delimiters. In 1, blocks can be delimited explicitly with braces, or implicitly through indentation (though the current implementation focuses on explicit braces). We will return to this programmable syntax feature in Chapter 5.</p>
+
+<p>The <code>return</code> statement gives back a value to the caller. Here, returning 0 conventionally indicates successful completion.</p>
+
+<h2>1.2 Variables and Arithmetic</h2>
+
+<p>The next program computes and prints a simple arithmetic result:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    x = 10
+    y = 20
+    sum = x + y
+    println(sum)
+    return 0
+  }
+</code></pre>
+
+<p>This prints <code>30</code>. The three lines</p>
+
+<pre><code>
+x = 10
+y = 20
+sum = x + y
+</code></pre>
+
+<p>declare and initialize three variables. In 1, you assign values to variables using <code>=</code>. The type of each variable is inferred from the value assigned to it. Here, all three variables are integers.</p>
+
+<p>1 provides the usual arithmetic operators: <code>+</code> for addition, <code>-</code> for subtraction, <code>*</code> for multiplication, and <code>/</code> for division. These work on integers and floating-point numbers.</p>
+
+<p>The division operator <code>/</code> performs integer division when both operands are integers, and floating-point division when either operand is a floating-point number.</p>
+
+<h2>1.3 The For Statement</h2>
+
+<p>Let us write a program to print a table of values. We will use a <code>while</code> loop, the basic iteration construct in 1:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    i = 0
+    while i &lt; 10: {
+      println(i)
+      i = i + 1
+    }
+    return 0
+  }
+</code></pre>
+
+<p>This prints the numbers 0 through 9, one per line.</p>
+
+<p>The <code>while</code> statement repeatedly executes its body (the statements in braces) as long as the condition <code>i < 10</code> is true. The body consists of two statements: one that prints the current value of <code>i</code>, and one that increments <code>i</code>. After each iteration, the condition is tested again.</p>
+
+<h2>1.4 Symbolic Constants and Character Strings</h2>
+
+<p>In 1, string literals are enclosed in double quotes. We have already seen examples of strings passed to <code>println</code>. Strings are a basic data type in 1.</p>
+
+<p>Here is a program that uses several strings:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    greeting = &quot;Hello&quot;
+    name = &quot;World&quot;
+    combined = str_concat(greeting, str_concat(&quot;, &quot;, name))
+    println(combined)
+    return 0
+  }
+</code></pre>
+
+<p>This prints <code>Hello, World</code>. The built-in function <code>str_concat</code> concatenates two strings. Notice that we must explicitly concatenate strings; 1 does not automatically join adjacent string literals.</p>
+
+<h2>1.5 A Collection of Useful Programs</h2>
+
+<p>We are now going to write a few useful programs to demonstrate more of 1's features. These examples will introduce functions with parameters, recursion, and conditional statements.</p>
+
+<h3>1.5.1 Factorial</h3>
+
+<p>Here is a function that computes the factorial of a number using recursion:</p>
+
+<pre><code>
+function factorial:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if n == 0: {
+      return 1
+    } else: {
+      return n * factorial(n - 1)
+    }
+  }
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    result = factorial(5)
+    println(result)
+    return 0
+  }
+</code></pre>
+
+<p>This program prints <code>120</code>, which is 5 factorial (5! = 5 × 4 × 3 × 2 × 1).</p>
+
+<p>The <code>factorial</code> function demonstrates several features:</p>
+
+<ol>
+<li><strong>Function parameters</strong>: The <code>inputs:</code> section declares that <code>factorial</code> takes one parameter, <code>n</code>, which must be an integer.</li>
+</ul>
+
+<ol>
+<li><strong>Function return values</strong>: The <code>outputs:</code> section declares that the function returns an integer called <code>result</code>.</li>
+</ul>
+
+<ol>
+<li><strong>Conditional execution</strong>: The <code>if-else</code> statement tests whether <code>n == 0</code>. If so, it returns 1 (the base case). Otherwise, it computes <code>n * factorial(n - 1)</code> recursively.</li>
+</ul>
+
+<ol>
+<li><strong>Recursion</strong>: The function calls itself with a smaller argument.</li>
+</ul>
+
+<h3>1.5.2 Fibonacci</h3>
+
+<p>Here is a function that computes Fibonacci numbers:</p>
+
+<pre><code>
+function fibonacci:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if n == 0: {
+      return 0
+    } else: {
+      if n == 1: {
+        return 1
+      } else: {
+        return fibonacci(n - 1) + fibonacci(n - 2)
+      }
+    }
+  }
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    result = fibonacci(8)
+    println(result)
+    return 0
+  }
+</code></pre>
+
+<p>This prints <code>21</code>, the 8th Fibonacci number.</p>
+
+<p>Notice how we can nest <code>if-else</code> statements. The function has three cases: if <code>n</code> is 0, return 0; if <code>n</code> is 1, return 1; otherwise, return the sum of the two previous Fibonacci numbers.</p>
+
+<h2>1.6 Arguments—Call by Value</h2>
+
+<p>In 1, function arguments are passed by value. This means that when a function is called, each argument expression is evaluated, and its value is copied to the corresponding parameter. Changes to parameters inside a function do not affect the arguments in the caller.</p>
+
+<p>For example:</p>
+
+<pre><code>
+function increment:
+  inputs:
+    x: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    x = x + 1
+    return x
+  }
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    a = 10
+    b = increment(a)
+    println(a)  // Prints 10
+    println(b)  // Prints 11
+    return 0
+  }
+</code></pre>
+
+<p>The variable <code>a</code> is not changed by the call to <code>increment</code>; only the parameter <code>x</code> (a copy of <code>a</code>) is incremented.</p>
+
+<h2>1.7 Character Arrays and String Manipulation</h2>
+
+<p>1 provides several built-in functions for working with strings:</p>
+
+<ul>
+<li><code>len(s)</code> - returns the length of string <code>s</code></li>
+<li><code>substr(s, start, end)</code> - returns a substring from position <code>start</code> to <code>end</code></li>
+<li><code>char_at(s, index)</code> - returns the character at position <code>index</code></li>
+<li><code>str_concat(s1, s2)</code> - concatenates two strings</li>
+<li><code>str_eq(s1, s2)</code> - tests if two strings are equal</li>
+</ul>
+
+<p>Here is a program that uses these functions:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    text = &quot;Hello, World!&quot;
+    length = len(text)
+    println(length)  // Prints 13
+
+    first_five = substr(text, 0, 5)
+    println(first_five)  // Prints &quot;Hello&quot;
+
+    first_char = char_at(text, 0)
+    println(first_char)  // Prints &quot;H&quot;
+
+    return 0
+  }
+</code></pre>
+
+<p>String indices start at 0, as in most modern programming languages.</p>
+
+<h2>1.8 External Variables and Scope</h2>
+
+<p>In the examples so far, all variables have been local to the functions in which they are declared. Such variables come into existence when the function is called and disappear when the function returns.</p>
+
+<p>Functions can also access variables declared at the global scope (outside of any function), but the current implementation of 1 does not yet support global variables. All variables must be declared within functions.</p>
+
+<p>Within a function, variables can be declared anywhere. A variable exists from the point of its first assignment to the end of the block containing that assignment.</p>
+
+<h2>1.9 Summary</h2>
+
+<p>This chapter has covered the basic elements of 1:</p>
+
+<ul>
+<li>Functions with explicit inputs and outputs</li>
+<li>Basic data types: integers, strings</li>
+<li>Arithmetic and comparison operators</li>
+<li>Control flow: <code>if-else</code> and <code>while</code></li>
+<li>Recursion</li>
+<li>Built-in functions for I/O and string manipulation</li>
+<li>Block delimiters using braces</li>
+</ul>
+
+<p>We have not covered all the features of 1, but we have seen enough to write useful programs. The following chapters will fill in the details.</p>
+
+<h2>Exercises</h2>
+
+<p><strong>Exercise 1-1.</strong> Write a program that prints the numbers 1 through 100, one per line.</p>
+
+<p><strong>Exercise 1-2.</strong> Write a function <code>power</code> that computes x raised to the power n (x^n) for non-negative integer n.</p>
+
+<p><strong>Exercise 1-3.</strong> Write a function to compute the greatest common divisor (GCD) of two integers using Euclid's algorithm.</p>
+
+<p><strong>Exercise 1-4.</strong> Write a program that prints a multiplication table for the numbers 1 through 10.</p>
+
+<p><strong>Exercise 1-5.</strong> Write a function <code>is_prime</code> that tests whether a given integer is prime.</p>
+
+<p><strong>Exercise 1-6.</strong> Write a function that reverses a string by using <code>substr</code> and <code>str_concat</code> to build up the reversed string.</p>
+
+<p><strong>Exercise 1-7.</strong> Write a function <code>count_chars</code> that counts the number of times a given character appears in a string.</p>
+
+<p><strong>Exercise 1-8.</strong> Write an iterative (non-recursive) version of the factorial function.</p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <a href="#chapter-0" class="nav-button">← Previous</a>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <a href="#chapter-2" class="nav-button">Next →</a>
+    </div>
+
+
+    <div class="chapter" id="chapter-2">
+<h1>Chapter 2: Types, Operators, and Expressions</h1>
+
+<p>Variables and constants are the basic data objects manipulated in a program. Declarations specify the type of variables and may set their initial values. Operators specify what is to be done with them. Expressions combine variables and constants to produce new values. This chapter discusses these topics in detail.</p>
+
+<h2>2.1 Variable Names</h2>
+
+<p>Names in 1 are made up of letters, digits, and underscores. Names must begin with a letter or underscore. The following are valid variable names:</p>
+
+<pre><code>
+x
+count
+total_sum
+_temp
+variable123
+</code></pre>
+
+<p>Upper case and lower case letters are distinct, so <code>count</code> and <code>Count</code> are different names. By convention, variable names use lowercase letters with underscores separating words.</p>
+
+<p>Function names follow the same rules as variable names. Keywords such as <code>function</code>, <code>if</code>, <code>while</code>, <code>return</code> cannot be used as variable names.</p>
+
+<p>It is wise to choose variable names that are meaningful and that will not become confused. Avoid names that differ only in case or that differ only by a single character.</p>
+
+<h2>2.2 Data Types and Sizes</h2>
+
+<p>1 provides several basic data types:</p>
+
+<p><strong>Integer</strong>: whole numbers, both positive and negative. Examples: <code>0</code>, <code>42</code>, <code>-17</code>, <code>1000</code></p>
+
+<p><strong>Float</strong>: floating-point numbers. Examples: <code>3.14</code>, <code>-0.5</code>, <code>2.0</code></p>
+
+<p><strong>String</strong>: sequences of characters enclosed in double quotes. Examples: <code>"hello"</code>, <code>"world"</code>, <code>""</code></p>
+
+<p><strong>Boolean</strong>: truth values, represented as integers. The value <code>0</code> is false; any non-zero value is true (typically <code>1</code>).</p>
+
+<p><strong>List</strong>: ordered collections of values. Lists are created and manipulated using built-in functions.</p>
+
+<p>The size and range of these types may vary depending on the implementation. In the current bootstrap compiler, integers are implemented as Python integers (effectively unlimited precision), and floats are Python floating-point numbers (typically 64-bit IEEE 754).</p>
+
+<h2>2.3 Constants</h2>
+
+<p>An integer constant like <code>1234</code> is an integer. A number with a decimal point like <code>123.4</code> is a floating-point number.</p>
+
+<p>String constants are sequences of zero or more characters surrounded by double quotes:</p>
+
+<pre><code>
+&quot;I am a string&quot;
+&quot;&quot;
+&quot;String with \&quot;quotes\&quot; inside&quot;
+</code></pre>
+
+<p>Within strings, the backslash <code>\</code> serves as an escape character. The sequence <code>\"</code> represents a double quote within a string. The sequence <code>\n</code> represents a newline character.</p>
+
+<p>There are no character constants in the current version of 1. Single characters are represented as strings of length 1.</p>
+
+<h2>2.4 Declarations and Initialization</h2>
+
+<p>All variables must be assigned a value before use. The first assignment to a variable implicitly declares it:</p>
+
+<pre><code>
+x = 10          // x is now an integer
+name = &quot;Alice&quot;  // name is now a string
+</code></pre>
+
+<p>The type of a variable is inferred from the value assigned to it. Once assigned, a variable's type is fixed; you cannot assign a value of a different type to the same variable.</p>
+
+<p>Function parameters are declared explicitly in the function signature:</p>
+
+<pre><code>
+function add:
+  inputs:
+    a: Integer
+    b: Integer
+  outputs:
+    sum: Integer
+  implementation: {
+    sum = a + b
+    return sum
+  }
+</code></pre>
+
+<p>Here, <code>a</code> and <code>b</code> are declared to be of type <code>Integer</code>. The return value <code>sum</code> is also declared as an <code>Integer</code>.</p>
+
+<h2>2.5 Arithmetic Operators</h2>
+
+<p>The binary arithmetic operators are <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>. Integer division truncates any fractional part:</p>
+
+<pre><code>
+x = 5 / 2   // x is 2, not 2.5
+</code></pre>
+
+<p>The <code>+</code> operator adds, <code>-</code> subtracts, <code><em></code> multiplies, and <code>/</code> divides. These operators have their conventional precedence: <code></em></code> and <code>/</code> are performed before <code>+</code> and <code>-</code>. Operators at the same precedence level are evaluated left to right.</p>
+
+<p>Parentheses can be used to alter the normal order of evaluation:</p>
+
+<pre><code>
+x = (5 + 3) * 2   // x is 16
+y = 5 + 3 * 2     // y is 11
+</code></pre>
+
+<p>The unary minus operator <code>-</code> negates its operand:</p>
+
+<pre><code>
+x = 10
+y = -x    // y is -10
+</code></pre>
+
+<h2>2.6 Relational and Logical Operators</h2>
+
+<p>The relational operators are:</p>
+
+<pre><code>
+==    equal to
+!=    not equal to
+&lt;     less than
+&lt;=    less than or equal to
+&gt;     greater than
+&gt;=    greater than or equal to
+</code></pre>
+
+<p>These operators produce an integer result: <code>1</code> for true and <code>0</code> for false.</p>
+
+<pre><code>
+x = 5
+y = 10
+result = x &lt; y    // result is 1 (true)
+</code></pre>
+
+<p>The logical operators are:</p>
+
+<pre><code>
+&amp;&amp;    logical AND
+||    logical OR
+!     logical NOT
+</code></pre>
+
+<p>These operators also produce <code>1</code> for true and <code>0</code> for false. The <code>&&</code> and <code>||</code> operators are short-circuiting: the second operand is not evaluated if the result is determined by the first operand.</p>
+
+<pre><code>
+x = 5
+y = 10
+result = (x &lt; y) &amp;&amp; (y &lt; 20)  // result is 1 (true)
+</code></pre>
+
+<h2>2.7 Type Conversions</h2>
+
+<p>When an operator has operands of different types, they must be converted to a common type. The general rule is to convert "narrower" types to "wider" types without losing information. For example, in an expression involving an integer and a float, the integer is converted to float.</p>
+
+<p>Explicit type conversion can be performed using built-in functions:</p>
+
+<ul>
+<li><code>str_to_int(s)</code> - converts a string to an integer</li>
+<li><code>int_to_str(n)</code> - converts an integer to a string</li>
+</ul>
+
+<p>Example:</p>
+
+<pre><code>
+text = &quot;42&quot;
+number = str_to_int(text)     // number is 42
+back_to_text = int_to_str(number)  // back_to_text is &quot;42&quot;
+</code></pre>
+
+<h2>2.8 Assignment Operators</h2>
+
+<p>The assignment operator is <code>=</code>. It assigns the value of the expression on the right to the variable on the left:</p>
+
+<pre><code>
+x = 10
+y = x + 5
+</code></pre>
+
+<p>Unlike some languages, 1 does not have compound assignment operators like <code>+=</code>, <code>-=</code>, etc. You must write out the full expression:</p>
+
+<pre><code>
+x = x + 1   // increment x (no ++ operator)
+</code></pre>
+
+<h2>2.9 Conditional Expressions</h2>
+
+<p>1 does not have a ternary conditional operator like C's <code>? :</code>. Instead, you must use an <code>if-else</code> statement:</p>
+
+<pre><code>
+if x &gt; 0: {
+  result = x
+} else: {
+  result = -x
+}
+</code></pre>
+
+<p>This pattern is so common that you may wish to define a utility function for it:</p>
+
+<pre><code>
+function abs:
+  inputs:
+    x: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if x &gt;= 0: {
+      return x
+    } else: {
+      return -x
+    }
+  }
+</code></pre>
+
+<h2>2.10 Precedence and Order of Evaluation</h2>
+
+<p>The precedence of operators in 1, from highest to lowest, is:</p>
+
+<pre><code>
+1. Parentheses ()
+2. Unary minus -
+3. Multiplication * and Division /
+4. Addition + and Subtraction -
+5. Relational operators &lt;, &lt;=, &gt;, &gt;=
+6. Equality operators ==, !=
+7. Logical AND &amp;&amp;
+8. Logical OR ||
+</code></pre>
+
+<p>Operators at the same level are evaluated left to right, except for the assignment operator, which is evaluated right to left.</p>
+
+<p>The order of evaluation of function arguments is not specified. In the expression:</p>
+
+<pre><code>
+result = f(a) + g(b)
+</code></pre>
+
+<p>either <code>f(a)</code> or <code>g(b)</code> may be evaluated first. If both functions modify global state, the result may depend on the order of evaluation.</p>
+
+<p>Similarly, the order in which side effects occur is not specified. Write programs that do not depend on order of evaluation when the order is not explicitly determined.</p>
+
+<h2>2.11 Summary</h2>
+
+<p>This chapter has covered:</p>
+
+<ul>
+<li>Variable naming conventions</li>
+<li>Basic data types: Integer, Float, String, Boolean, List</li>
+<li>Constants and literals</li>
+<li>Variable declaration through assignment</li>
+<li>Arithmetic, relational, and logical operators</li>
+<li>Type conversions</li>
+<li>Operator precedence and evaluation order</li>
+</ul>
+
+<p>Understanding these fundamentals is essential for writing correct 1 programs. The next chapter discusses control flow constructs that make use of the operators and expressions described here.</p>
+
+<h2>Exercises</h2>
+
+<p><strong>Exercise 2-1.</strong> Write expressions to test whether a year is a leap year. A year is a leap year if it is divisible by 4 but not by 100, unless it is also divisible by 400.</p>
+
+<p><strong>Exercise 2-2.</strong> Write a function that returns the absolute value of an integer without using the <code>if</code> statement. (Hint: use multiplication by the sign.)</p>
+
+<p><strong>Exercise 2-3.</strong> Write a function <code>digit_to_int</code> that converts a single-character string containing a digit to its integer value.</p>
+
+<p><strong>Exercise 2-4.</strong> Write a function <code>to_lowercase</code> that converts an uppercase letter (as a single-character string) to lowercase. Assume ASCII encoding.</p>
+
+<p><strong>Exercise 2-5.</strong> Evaluate the following expressions and explain the order of evaluation:</p>
+<ul>
+<li><code>5 + 3 * 2</code></li>
+<li><code>(5 + 3) * 2</code></li>
+<li><code>10 / 2 + 3</code></li>
+<li><code>10 / (2 + 3)</code></li>
+</ul>
+
+<p><strong>Exercise 2-6.</strong> Write a function that extracts the individual digits from a three-digit integer. For example, given <code>456</code>, extract <code>4</code>, <code>5</code>, and <code>6</code>.</p>
+
+<p><strong>Exercise 2-7.</strong> Write a function that tests whether a string represents a valid integer (all digits, possibly with a leading minus sign).</p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <a href="#chapter-1" class="nav-button">← Previous</a>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <a href="#chapter-3" class="nav-button">Next →</a>
+    </div>
+
+
+    <div class="chapter" id="chapter-3">
+<h1>Chapter 3: Control Flow</h1>
+
+<p>The control-flow statements of a language specify the order in which computations are performed. We have already seen the most common control-flow constructions in earlier examples; here we will complete the set, and be more precise about the ones already discussed.</p>
+
+<h2>3.1 Statements and Blocks</h2>
+
+<p>An expression such as <code>x = 0</code> or <code>i = i + 1</code> or <code>println(x)</code> becomes a statement when it is followed by a newline or semicolon. In 1, statements are typically written one per line.</p>
+
+<p>The statements of a function are enclosed in braces <code>{ }</code> to form a compound statement or block. There is no semicolon after the right brace that ends a block.</p>
+
+<pre><code>
+function example:
+  outputs:
+    result: Integer
+  implementation: {
+    x = 0
+    y = 10
+    return x + y
+  }
+</code></pre>
+
+<p>Braces around a block are always required in the current implementation of 1. This is one of the design choices that makes the syntax unambiguous and suitable for programmatic manipulation.</p>
+
+<h2>3.2 If-Else</h2>
+
+<p>The if-else statement is used to make decisions. The basic form is:</p>
+
+<pre><code>
+if condition: {
+  statement
+}
+</code></pre>
+
+<p>The condition is evaluated. If it is true (non-zero), the statement is executed. The braces are required even for single statements.</p>
+
+<p>The else part is optional:</p>
+
+<pre><code>
+if condition: {
+  statement1
+} else: {
+  statement2
+}
+</code></pre>
+
+<p>If the condition is true, statement1 is executed; otherwise statement2 is executed. The else clause is always associated with the nearest previous unmatched if.</p>
+
+<p>Because the if-else statement returns no value, it cannot be used within expressions. You must use separate statements:</p>
+
+<pre><code>
+if x &gt; 0: {
+  y = x
+} else: {
+  y = -x
+}
+</code></pre>
+
+<p>If-else statements can be nested to create multi-way decisions:</p>
+
+<pre><code>
+if n &lt; 0: {
+  println(&quot;negative&quot;)
+} else: {
+  if n == 0: {
+    println(&quot;zero&quot;)
+  } else: {
+    println(&quot;positive&quot;)
+  }
+}
+</code></pre>
+
+<p>The inner if-else could be written without braces in some languages, but in 1, braces are required at each level.</p>
+
+<h2>3.3 Else-If</h2>
+
+<p>The construction</p>
+
+<pre><code>
+if condition1: {
+  statement1
+} else: {
+  if condition2: {
+    statement2
+  } else: {
+    if condition3: {
+      statement3
+    } else: {
+      statement4
+    }
+  }
+}
+</code></pre>
+
+<p>occurs so frequently that it is worth noting a pattern. This is simply a multi-way decision. The conditions are evaluated in order. When one is found to be true, the corresponding statement is executed, and the chain terminates. The code for each condition is executed only if all previous conditions were false.</p>
+
+<p>The final else handles the "none of the above" or default case where none of the conditions is satisfied. Sometimes there is no explicit action for the default; in that case, the trailing else can be omitted.</p>
+
+<p>Here is a practical example that converts a numeric grade to a letter grade:</p>
+
+<pre><code>
+function letter_grade:
+  inputs:
+    score: Integer
+  outputs:
+    grade: String
+  implementation: {
+    if score &gt;= 90: {
+      return &quot;A&quot;
+    } else: {
+      if score &gt;= 80: {
+        return &quot;B&quot;
+      } else: {
+        if score &gt;= 70: {
+          return &quot;C&quot;
+        } else: {
+          if score &gt;= 60: {
+            return &quot;D&quot;
+          } else: {
+            return &quot;F&quot;
+          }
+        }
+      }
+    }
+  }
+</code></pre>
+
+<h2>3.4 While</h2>
+
+<p>The while statement has the form:</p>
+
+<pre><code>
+while condition: {
+  statement
+}
+</code></pre>
+
+<p>The condition is evaluated. If it is true (non-zero), the statement is executed and the condition is re-evaluated. This cycle continues until the condition becomes false (zero), at which point execution continues after the statement.</p>
+
+<p>Here is an example that prints the numbers from 0 to 9:</p>
+
+<pre><code>
+i = 0
+while i &lt; 10: {
+  println(i)
+  i = i + 1
+}
+</code></pre>
+
+<p>The key points about while loops:</p>
+
+<ol>
+<li>The condition is tested before each iteration</li>
+<li>If the condition is initially false, the body is never executed</li>
+<li>The loop continues until the condition becomes false</li>
+<li>The body must eventually make the condition false, or the loop will run forever</li>
+</ul>
+
+<h3>Infinite Loops</h3>
+
+<p>A while loop with a constant true condition will run forever:</p>
+
+<pre><code>
+while 1: {
+  // This loop never terminates
+}
+</code></pre>
+
+<p>Such loops are sometimes useful, but more often they are programming errors. Make sure your loops have a proper termination condition.</p>
+
+<h2>3.5 Break and Continue</h2>
+
+<p>1 does not currently support <code>break</code> and <code>continue</code> statements. To exit a loop early, you must structure your code so that the loop condition becomes false. To skip the rest of an iteration, you must use an if statement to guard the remaining code.</p>
+
+<p>For example, to search for a value in a conceptual list and stop when found, you might write:</p>
+
+<pre><code>
+found = 0
+i = 0
+while i &lt; count &amp;&amp; found == 0: {
+  if value == target: {
+    found = 1
+  }
+  i = i + 1
+}
+</code></pre>
+
+<p>This pattern is more verbose than using <code>break</code>, but it makes the loop termination condition explicit.</p>
+
+<h2>3.6 Ensure-Otherwise</h2>
+
+<p>The ensure-otherwise construct is a distinctive feature of 1 designed for error handling and validation. It has the form:</p>
+
+<pre><code>
+ensure condition: {
+  statement1
+} otherwise: {
+  statement2
+}
+</code></pre>
+
+<p>The ensure-otherwise statement evaluates the condition. If the condition is true, statement1 is executed. If the condition is false, statement2 is executed. This is similar to if-else, but the semantic meaning is different: ensure-otherwise expresses a contract or invariant that should be true, with a handler for the case where it is violated.</p>
+
+<p>The ensure-otherwise construct is particularly useful for precondition checking:</p>
+
+<pre><code>
+function divide:
+  inputs:
+    a: Integer
+    b: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    ensure b != 0: {
+      result = a / b
+      return result
+    } otherwise: {
+      println(&quot;Error: division by zero&quot;)
+      return 0
+    }
+  }
+</code></pre>
+
+<p>The ensure-otherwise statement makes contracts explicit and encourages programmers to think about error conditions.</p>
+
+<h2>3.7 Loops—A Closer Look</h2>
+
+<p>Most loops have a common pattern: initialize a control variable, test a condition involving that variable, and update the variable. The while loop handles this pattern, but requires the initialization and update to be separate statements:</p>
+
+<pre><code>
+i = 0                    // initialization
+while i &lt; n: {          // test
+  // loop body
+  i = i + 1             // update
+}
+</code></pre>
+
+<p>This separation is intentional: it makes each component of the loop explicit and clear. There is no "hidden" increment as there would be in a C-style for loop.</p>
+
+<h3>Counting Down</h3>
+
+<p>To count down, reverse the initialization, test, and update:</p>
+
+<pre><code>
+i = 10
+while i &gt; 0: {
+  println(i)
+  i = i - 1
+}
+</code></pre>
+
+<p>This prints the numbers 10 down to 1.</p>
+
+<h3>Iterating with Conditions</h3>
+
+<p>The while loop is general enough to handle any iteration pattern. For example, to iterate until a condition is met:</p>
+
+<pre><code>
+sum = 0
+i = 1
+while sum &lt; 1000: {
+  sum = sum + i
+  i = i + 1
+}
+</code></pre>
+
+<p>This sums the integers 1, 2, 3, ... until the sum exceeds 1000.</p>
+
+<h2>3.8 Recursion as Control Flow</h2>
+
+<p>Recursion is a powerful form of control flow. Many problems that would require complex loops can be expressed simply using recursion.</p>
+
+<p>We have seen recursive functions for factorial and Fibonacci numbers. Here is another example: computing the sum of integers from 1 to n:</p>
+
+<pre><code>
+function sum_to_n:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if n == 0: {
+      return 0
+    } else: {
+      return n + sum_to_n(n - 1)
+    }
+  }
+</code></pre>
+
+<p>This function calls itself with progressively smaller arguments until it reaches the base case (n == 0).</p>
+
+<p>Recursion is elegant but can be inefficient for some problems due to function call overhead. When performance matters, an iterative solution may be preferable:</p>
+
+<pre><code>
+function sum_to_n_iterative:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    sum = 0
+    i = 1
+    while i &lt;= n: {
+      sum = sum + i
+      i = i + 1
+    }
+    return sum
+  }
+</code></pre>
+
+<p>Choose between recursion and iteration based on clarity and performance needs.</p>
+
+<h2>3.9 Summary</h2>
+
+<p>This chapter has covered the control-flow statements of 1:</p>
+
+<ul>
+<li><strong>if-else</strong>: conditional execution</li>
+<li><strong>while</strong>: loops that test a condition before each iteration</li>
+<li><strong>ensure-otherwise</strong>: contract-based conditional execution</li>
+<li><strong>recursion</strong>: functions that call themselves</li>
+</ul>
+
+<p>These constructs are sufficient to express any algorithm. The key is choosing the right construct for each situation: use if-else for decisions, while for loops, ensure-otherwise for validation, and recursion for naturally recursive problems.</p>
+
+<h2>Exercises</h2>
+
+<p><strong>Exercise 3-1.</strong> Write a function that uses a while loop to compute the sum of the first n positive integers.</p>
+
+<p><strong>Exercise 3-2.</strong> Write a function to find the largest integer in a list without using recursion. (You will need to use list access functions and a while loop.)</p>
+
+<p><strong>Exercise 3-3.</strong> Write a recursive function to reverse a string.</p>
+
+<p><strong>Exercise 3-4.</strong> Write both recursive and iterative functions to compute the nth triangular number (the sum 1 + 2 + ... + n).</p>
+
+<p><strong>Exercise 3-5.</strong> Write a function that uses nested if-else statements to categorize an integer as:</p>
+<ul>
+<li>"negative" if less than 0</li>
+<li>"zero" if equal to 0</li>
+<li>"small positive" if 1-10</li>
+<li>"medium positive" if 11-100</li>
+<li>"large positive" if greater than 100</li>
+</ul>
+
+<p><strong>Exercise 3-6.</strong> Write a function that uses a while loop to count how many times a target digit appears in an integer. For example, the digit 3 appears twice in 13373.</p>
+
+<p><strong>Exercise 3-7.</strong> Write a function using ensure-otherwise that computes the square root of an integer using Newton's method, ensuring that the input is non-negative.</p>
+
+<p><strong>Exercise 3-8.</strong> Write a recursive function to compute the power x^n where n is a non-negative integer. Optimize it by using the identity x^n = (x^(n/2))^2 when n is even.</p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <a href="#chapter-2" class="nav-button">← Previous</a>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <a href="#chapter-4" class="nav-button">Next →</a>
+    </div>
+
+
+    <div class="chapter" id="chapter-4">
+<h1>Chapter 4: Functions and Program Structure</h1>
+
+<p>Functions break large computing tasks into smaller ones, and enable people to build on what others have done instead of starting over from scratch. Appropriate functions hide details of operation from parts of the program that don't need to know about them, thus clarifying the whole, and easing the pain of making changes.</p>
+
+<p>1 has been designed to make functions efficient and easy to use; 1 programs generally consist of many small functions rather than a few big ones. A program may reside in one or more source files. Source files may be compiled separately and loaded together. This chapter discusses these aspects of program structure.</p>
+
+<h2>4.1 Basics of Functions</h2>
+
+<p>We have already seen and used many functions. Let us now look at them more systematically. Here is a function that computes the power x^n for positive integer n:</p>
+
+<pre><code>
+function power:
+  inputs:
+    base: Integer
+    exponent: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    p = 1
+    i = 0
+    while i &lt; exponent: {
+      p = p * base
+      i = i + 1
+    }
+    return p
+  }
+</code></pre>
+
+<p>A function definition has three parts:</p>
+
+<ol>
+<li><strong>Signature</strong>: The function name (<code>power</code>), inputs, and outputs</li>
+<li><strong>Inputs section</strong>: Declares the parameters with their types</li>
+<li><strong>Outputs section</strong>: Declares the return value(s) with types</li>
+<li><strong>Implementation</strong>: The body of the function in braces</li>
+</ul>
+
+<p>The return statement provides the value that the function returns. A function must return a value of the declared output type.</p>
+
+<p>To call this function:</p>
+
+<pre><code>
+result = power(2, 10)  // result is 1024
+</code></pre>
+
+<h2>4.2 Functions Returning Non-Integer Values</h2>
+
+<p>Functions can return any type. Here is a function that returns a string:</p>
+
+<pre><code>
+function greet:
+  inputs:
+    name: String
+  outputs:
+    message: String
+  implementation: {
+    hello = &quot;Hello, &quot;
+    exclaim = &quot;!&quot;
+    message = str_concat(hello, str_concat(name, exclaim))
+    return message
+  }
+</code></pre>
+
+<p>The output type is <code>String</code>, and the function returns a string value.</p>
+
+<h2>4.3 More on Function Arguments</h2>
+
+<p>In 1, all function arguments are passed by value. This means the function receives a copy of the argument value, not the argument itself. Changes to parameters inside the function do not affect the caller's variables.</p>
+
+<pre><code>
+function try_to_modify:
+  inputs:
+    x: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    x = x + 100
+    return x
+  }
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    a = 5
+    b = try_to_modify(a)
+    println(a)  // Prints 5 (unchanged)
+    println(b)  // Prints 105
+    return 0
+  }
+</code></pre>
+
+<p>The parameter <code>x</code> is a copy of <code>a</code>. Modifying <code>x</code> does not change <code>a</code>.</p>
+
+<p>For efficiency reasons, you might expect that passing large strings or data structures would be expensive. However, the implementation may optimize this by using copy-on-write or other techniques, so passing values is not necessarily inefficient.</p>
+
+<h2>4.4 External Variables and Scope</h2>
+
+<p>The variables declared within a function are local to that function; they come into existence when the function is called and disappear when the function returns. These are called <em>automatic variables</em> because they automatically appear and disappear.</p>
+
+<p>It is possible to have variables that are external to all functions, but the current implementation of 1 does not support global variables. All variables must be declared within functions.</p>
+
+<p>However, functions can call other functions, and through their parameters and return values, they can share information:</p>
+
+<pre><code>
+function compute:
+  inputs:
+    x: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    temp = helper(x)
+    return temp * 2
+  }
+
+function helper:
+  inputs:
+    y: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    return y + 1
+  }
+</code></pre>
+
+<h2>4.5 Scope Rules</h2>
+
+<p>The scope of a name is the part of the program within which the name can be used. For an automatic variable declared in a function, the scope is the function in which the name is declared.</p>
+
+<p>Parameters of a function are in the scope of the function. They act as local variables, initialized by the values passed when the function is called.</p>
+
+<p>Because 1 does not have global variables, there is no ambiguity about which variable a name refers to: it is always the parameter or local variable in the current function.</p>
+
+<h2>4.6 Header Comments and Documentation</h2>
+
+<p>It is good practice to document what each function does, what its parameters mean, and what it returns. This is typically done with comments before the function:</p>
+
+<pre><code>
+// factorial computes n! for non-negative integers.
+// Returns 1 for n = 0.
+function factorial:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if n == 0: {
+      return 1
+    } else: {
+      return n * factorial(n - 1)
+    }
+  }
+</code></pre>
+
+<p>Comments in 1 begin with <code>//</code> and extend to the end of the line.</p>
+
+<p>The explicit declaration of inputs and outputs makes 1 functions somewhat self-documenting, but additional comments explaining the purpose and any preconditions or post conditions are valuable.</p>
+
+<h2>4.7 Static Variables</h2>
+
+<p>Unlike C, 1 does not have static variables (variables that retain their value between function calls). Each time a function is called, its local variables are initialized fresh.</p>
+
+<p>If you need to maintain state between function calls, you must do so through parameters and return values, or (in a future version of 1) through external state management.</p>
+
+<h2>4.8 Recursion</h2>
+
+<p>A function may call itself either directly or indirectly. We have seen several examples of direct recursion. Here is an example of indirect recursion:</p>
+
+<pre><code>
+function is_even:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if n == 0: {
+      return 1
+    } else: {
+      return is_odd(n - 1)
+    }
+  }
+
+function is_odd:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if n == 0: {
+      return 0
+    } else: {
+      return is_even(n - 1)
+    }
+  }
+</code></pre>
+
+<p>These two functions call each other recursively to determine whether a number is even or odd (assuming non-negative integers).</p>
+
+<p>Recursion is a powerful technique, but it has costs: each recursive call uses stack space, and function call overhead can make recursion slower than iteration. Use recursion when it makes the code clearer, but be aware of the performance implications.</p>
+
+<h2>4.9 The Main Function</h2>
+
+<p>Every 1 program must have a function named <code>main</code>. This is where execution begins. The <code>main</code> function should return an integer exit code:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    // Program logic here
+    return 0
+  }
+</code></pre>
+
+<p>By convention, returning 0 indicates successful execution, and returning non-zero indicates an error.</p>
+
+<p>The main function can call any other functions, read input, produce output, and perform any computations needed.</p>
+
+<h2>4.10 Program Organization</h2>
+
+<p>A 1 program consists of one or more functions. These functions are typically organized in a single source file, but could be split across multiple files (in a future version with a module system).</p>
+
+<p>Functions should be ordered so that each function is defined before it is called, or all functions should be declared before they are used (in a future version with forward declarations).</p>
+
+<p>The typical organization is:</p>
+
+<ol>
+<li>Comments describing the program</li>
+<li>Helper functions (in order of dependency)</li>
+<li>Main function</li>
+</ul>
+
+<p>For example:</p>
+
+<pre><code>
+// Program to compute combinations C(n,k) = n! / (k! * (n-k)!)
+
+function factorial:
+  inputs:
+    n: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if n == 0: {
+      return 1
+    } else: {
+      return n * factorial(n - 1)
+    }
+  }
+
+function combination:
+  inputs:
+    n: Integer
+    k: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    nfact = factorial(n)
+    kfact = factorial(k)
+    nkfact = factorial(n - k)
+    return nfact / (kfact * nkfact)
+  }
+
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    result = combination(5, 2)  // C(5,2) = 10
+    println(result)
+    return 0
+  }
+</code></pre>
+
+<h2>4.11 Built-in Functions</h2>
+
+<p>1 provides a set of built-in functions for common operations. These functions are always available without any import or declaration.</p>
+
+<p><strong>String functions:</strong></p>
+<ul>
+<li><code>len(s)</code> - length of string s</li>
+<li><code>substr(s, start, end)</code> - substring from start to end</li>
+<li><code>char_at(s, index)</code> - character at position index</li>
+<li><code>str_concat(s1, s2)</code> - concatenate two strings</li>
+<li><code>str_eq(s1, s2)</code> - test string equality</li>
+<li><code>str_to_int(s)</code> - convert string to integer</li>
+<li><code>int_to_str(n)</code> - convert integer to string</li>
+</ul>
+
+<p><strong>Character testing:</strong></p>
+<ul>
+<li><code>is_digit(c)</code> - returns 1 if c is a digit</li>
+<li><code>is_alpha(c)</code> - returns 1 if c is a letter</li>
+<li><code>is_alnum(c)</code> - returns 1 if c is alphanumeric</li>
+</ul>
+
+<p><strong>List functions:</strong></p>
+<ul>
+<li><code>list_append(list, item)</code> - append item to list</li>
+<li><code>list_get(list, index)</code> - get item at index</li>
+<li><code>list_set(list, index, value)</code> - set item at index</li>
+</ul>
+
+<p><strong>I/O functions:</strong></p>
+<ul>
+<li><code>print(s)</code> - print string without newline</li>
+<li><code>println(s)</code> - print string with newline</li>
+</ul>
+
+<p>These built-in functions are implemented by the runtime system and provide essential functionality.</p>
+
+<h2>4.12 Summary</h2>
+
+<p>Functions are the building blocks of 1 programs. This chapter has covered:</p>
+
+<ul>
+<li>Function definition syntax with explicit inputs and outputs</li>
+<li>Pass-by-value parameter passing</li>
+<li>Local variables and scope</li>
+<li>Recursion</li>
+<li>The main function</li>
+<li>Built-in functions</li>
+<li>Program organization</li>
+</ul>
+
+<p>Well-designed functions make programs easier to understand, test, and modify. Each function should have a single, well-defined purpose, and its interface (inputs and outputs) should be clear.</p>
+
+<h2>Exercises</h2>
+
+<p><strong>Exercise 4-1.</strong> Write a function <code>swap</code> that takes two integers as input and returns them in opposite order (requires returning multiple values, which is not yet supported; for now, just document how you would design this).</p>
+
+<p><strong>Exercise 4-2.</strong> Write a function <code>min</code> that returns the smaller of two integers, and a function <code>max</code> that returns the larger.</p>
+
+<p><strong>Exercise 4-3.</strong> Write a function <code>min_of_three</code> that returns the smallest of three integers using the <code>min</code> function from the previous exercise.</p>
+
+<p><strong>Exercise 4-4.</strong> Write a recursive function to compute the sum of the digits of a non-negative integer.</p>
+
+<p><strong>Exercise 4-5.</strong> Write a function <code>str_reverse</code> that reverses a string using recursion. Compare it with an iterative version.</p>
+
+<p><strong>Exercise 4-6.</strong> Write a function <code>count_substring</code> that counts how many times a substring appears in a string.</p>
+
+<p><strong>Exercise 4-7.</strong> Write mutually recursive functions to implement a simple parser for nested parentheses.</p>
+
+<p><strong>Exercise 4-8.</strong> Organize a program with multiple functions to compute the first n prime numbers. Use helper functions for testing primality and generating candidates.</p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <a href="#chapter-3" class="nav-button">← Previous</a>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <a href="#chapter-5" class="nav-button">Next →</a>
+    </div>
+
+
+    <div class="chapter" id="chapter-5">
+<h1>Chapter 5: Programmable Syntax</h1>
+
+<p>Most programming languages fix their syntax at design time. Once the language is defined, programmers must work within the constraints of that syntax. The 1 programming language breaks this tradition with a revolutionary feature: <strong>programmable syntax</strong>. In 1, syntax itself is data that programs can manipulate.</p>
+
+<p>This chapter introduces the concept of programmable syntax, shows how it works in practice, and explores its implications for language design and program development.</p>
+
+<h2>5.1 The Problem with Fixed Syntax</h2>
+
+<p>Traditional programming languages make a fundamental assumption: the notation in which programs are written is fixed. Programmers adapt their thinking to the language's syntax. While this provides consistency, it also creates limitations:</p>
+
+<ol>
+<li><strong>Domain mismatch</strong>: The language's syntax may not match the problem domain</li>
+<li><strong>Evolution constraints</strong>: Adding new syntax features requires changing the compiler</li>
+<li><strong>Notation rigidity</strong>: Programmers cannot choose the most natural notation for their problem</li>
+</ul>
+
+<p>Consider a simple example: block delimiters. Some languages use braces <code>{ }</code>, others use <code>begin/end</code>, and still others use indentation. Each choice has advocates, but programmers must accept the language designer's decision.</p>
+
+<h2>5.2 Syntax as Data</h2>
+
+<p>The key insight of 1 is that syntax elements—such as block delimiters, keywords, and operators—can be treated as data. Just as a program can manipulate strings, integers, and lists, a program can manipulate its own syntax.</p>
+
+<p>In 1, block delimiters are not hardcoded into the parser. Instead, they are configurable:</p>
+
+<pre><code>
+// Current default: braces for blocks
+function example:
+  outputs:
+    result: Integer
+  implementation: {
+    x = 10
+    return x
+  }
+</code></pre>
+
+<p>The braces <code>{</code> and <code>}</code> are the current block delimiters, but these could be changed:</p>
+
+<pre><code>
+// Hypothetical: using begin/end
+function example:
+  outputs:
+    result: Integer
+  implementation: begin
+    x = 10
+    return x
+  end
+</code></pre>
+
+<p>The parser treats block delimiters as parameters, not as fixed tokens.</p>
+
+<h2>5.3 Block Delimiters</h2>
+
+<p>The current implementation of 1 uses braces <code>{</code> and <code>}</code> as block delimiters. This choice was made to enable rapid development and to work around limitations in indentation-based parsing.</p>
+
+<p>Braces provide several advantages:</p>
+
+<ol>
+<li><strong>Explicit boundaries</strong>: No ambiguity about where a block begins and ends</li>
+<li><strong>Nesting clarity</strong>: Easy to see nested structures</li>
+<li><strong>Machine-friendly</strong>: Simple to parse programmatically</li>
+<li><strong>Editor-independent</strong>: No dependence on tab/space settings</li>
+</ul>
+
+<p>Example with nested blocks:</p>
+
+<pre><code>
+function absolute_value:
+  inputs:
+    x: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    if x &gt;= 0: {
+      return x
+    } else: {
+      return -x
+    }
+  }
+</code></pre>
+
+<p>The braces make the nesting structure explicit.</p>
+
+<h2>5.4 Alternative Syntaxes</h2>
+
+<p>While the current implementation uses braces, the design of 1 allows for alternative syntaxes. A future version might support:</p>
+
+<p><strong>Indentation-based blocks:</strong></p>
+<pre><code>
+function example:
+  outputs:
+    result: Integer
+  implementation:
+    x = 10
+    return x
+</code></pre>
+
+<p><strong>Keyword-based blocks:</strong></p>
+<pre><code>
+function example:
+  outputs:
+    result: Integer
+  implementation:
+    begin
+      x = 10
+      return x
+    end
+</code></pre>
+
+<p><strong>Custom delimiters:</strong></p>
+<pre><code>
+function example:
+  outputs:
+    result: Integer
+  implementation: [
+    x = 10
+    return x
+  ]
+</code></pre>
+
+<p>The key is that the syntax is not fixed in the language definition. It can be specified and changed.</p>
+
+<h2>5.5 Syntax Variables (Future Feature)</h2>
+
+<p>The full vision of programmable syntax includes syntax variables—identifiers that hold syntax rules. A future version of 1 might include:</p>
+
+<pre><code>
+syntax block_delimiters: {
+  open: &quot;{&quot;
+  close: &quot;}&quot;
+}
+
+syntax keywords: {
+  function: &quot;function&quot;
+  if: &quot;if&quot;
+  while: &quot;while&quot;
+  return: &quot;return&quot;
+}
+</code></pre>
+
+<p>With these declarations, programs could modify their own syntax:</p>
+
+<pre><code>
+syntax block_delimiters: {
+  open: &quot;begin&quot;
+  close: &quot;end&quot;
+}
+
+// Now use the new syntax
+function example:
+  outputs:
+    result: Integer
+  implementation: begin
+    x = 10
+    return x
+  end
+</code></pre>
+
+<p>This is not yet implemented, but it demonstrates the direction of the language.</p>
+
+<h2>5.6 With-Syntax Blocks (Future Feature)</h2>
+
+<p>To enable localized syntax changes, 1 might support <code>with_syntax</code> blocks:</p>
+
+<pre><code>
+with_syntax block_delimiters = indent_based:
+  function example:
+    outputs:
+      result: Integer
+    implementation:
+      x = 10
+      return x
+</code></pre>
+
+<p>Inside the <code>with_syntax</code> block, the specified syntax rules apply. Outside, the default syntax is restored.</p>
+
+<p>This allows different parts of a program to use different syntaxes, or even different programs to collaborate with different notational preferences.</p>
+
+<h2>5.7 Parsing Programs in 1</h2>
+
+<p>One of the most powerful applications of programmable syntax is that 1 programs can parse and manipulate other 1 programs. The self-hosting compiler demonstrates this:</p>
+
+<pre><code>
+// From compiler/tokenizer.one
+function tokenize:
+  inputs:
+    source: String
+  outputs:
+    token_count: Integer
+  implementation: {
+    pos = 0
+    tokens = 0
+    source_len = len(source)
+
+    while pos &lt; source_len: {
+      c = char_at(source, pos)
+      // Recognize tokens based on syntax rules...
+      tokens = tokens + 1
+      pos = pos + 1
+    }
+
+    return tokens
+  }
+</code></pre>
+
+<p>This function, written in 1, can tokenize 1 source code. Because syntax is data, the tokenizer can access and use the same syntax rules that the parser uses.</p>
+
+<h2>5.8 Implications of Programmable Syntax</h2>
+
+<p>Programmable syntax has profound implications:</p>
+
+<h3>1. Domain-Specific Languages</h3>
+
+<p>Programmers can define syntax that matches their problem domain:</p>
+
+<pre><code>
+// Mathematical notation
+syntax operators: {
+  &quot;∀&quot;: &quot;forall&quot;
+  &quot;∃&quot;: &quot;exists&quot;
+  &quot;∈&quot;: &quot;element_of&quot;
+}
+
+// Now use mathematical symbols in code
+</code></pre>
+
+<h3>2. Language Evolution</h3>
+
+<p>The language can evolve without breaking existing code:</p>
+
+<pre><code>
+// Old syntax still works
+function old_style: { ... }
+
+// New syntax also works
+function new_style: begin ... end
+</code></pre>
+
+<h3>3. Multi-Paradigm Support</h3>
+
+<p>Different programming paradigms can coexist with their natural syntax:</p>
+
+<pre><code>
+// Functional style with one syntax
+// Imperative style with another syntax
+// Logic programming with yet another
+</code></pre>
+
+<h3>4. Meta-Programming</h3>
+
+<p>Programs can generate and manipulate programs:</p>
+
+<pre><code>
+function generate_parser:
+  inputs:
+    syntax_rules: String
+  outputs:
+    parser_code: String
+  implementation: {
+    // Generate a parser based on syntax rules
+    return generated_code
+  }
+</code></pre>
+
+<h2>5.9 Syntax Transformations</h2>
+
+<p>With programmable syntax, transformations between syntactic styles become first-class operations:</p>
+
+<pre><code>
+function transform_syntax:
+  inputs:
+    code: String
+    from_syntax: String
+    to_syntax: String
+  outputs:
+    transformed: String
+  implementation: {
+    // Parse code using from_syntax
+    // Generate code using to_syntax
+    return result
+  }
+</code></pre>
+
+<p>This could enable automatic translation between different coding styles, or adaptation of code to different contexts.</p>
+
+<h2>5.10 Current Limitations</h2>
+
+<p>The current implementation of 1 does not yet fully realize the vision of programmable syntax. Current limitations include:</p>
+
+<ol>
+<li><strong>Fixed block delimiters</strong>: Braces are required; indentation-based syntax is not yet supported</li>
+<li><strong>No syntax variables</strong>: Cannot declare or modify syntax rules</li>
+<li><strong>No with-syntax blocks</strong>: Cannot localize syntax changes</li>
+<li><strong>Limited token types</strong>: The parser recognizes a fixed set of token types</li>
+</ul>
+
+<p>These limitations will be addressed in future versions as the language evolves.</p>
+
+<h2>5.11 Design Principles</h2>
+
+<p>The design of programmable syntax follows several principles:</p>
+
+<ol>
+<li><strong>Explicitness</strong>: Syntax rules should be declared explicitly, not inferred</li>
+<li><strong>Locality</strong>: Syntax changes should be scoped to avoid action-at-a-distance</li>
+<li><strong>Compatibility</strong>: Different syntax styles should be able to coexist</li>
+<li><strong>Simplicity</strong>: The mechanism for specifying syntax should itself be simple</li>
+</ul>
+
+<p>These principles ensure that programmable syntax enhances rather than complicates the language.</p>
+
+<h2>5.12 Comparison with Other Languages</h2>
+
+<p>Other languages have approached syntax flexibility in different ways:</p>
+
+<p><strong>Lisp</strong>: Homoiconic (code is data), but syntax is uniform S-expressions</p>
+<p><strong>Racket</strong>: #lang mechanism allows different languages in same file</p>
+<p><strong>Scala/Kotlin</strong>: Operator overloading and DSL support</p>
+<p><strong>Template Haskell</strong>: Compile-time metaprogramming</p>
+
+<p>1's approach is unique: syntax itself (not just code structure) is data that can be manipulated. This is <strong>meta-homoiconicity</strong>—not just "code is data" but "syntax is data."</p>
+
+<h2>5.13 Practical Applications</h2>
+
+<p>Even with current limitations, programmable syntax enables practical applications:</p>
+
+<h3>1. Code Generation</h3>
+
+<p>Generate 1 code with the desired syntax style:</p>
+
+<pre><code>
+function generate_function:
+  inputs:
+    name: String
+    use_braces: Integer
+  outputs:
+    code: String
+  implementation: {
+    if use_braces == 1: {
+      return code_with_braces
+    } else: {
+      return code_with_indents
+    }
+  }
+</code></pre>
+
+<h3>2. Syntax Checking</h3>
+
+<p>Verify that code follows a particular syntax style:</p>
+
+<pre><code>
+function check_syntax_style:
+  inputs:
+    code: String
+    required_style: String
+  outputs:
+    compliant: Integer
+  implementation: {
+    // Parse and verify syntax style
+    return result
+  }
+</code></pre>
+
+<h3>3. Transpilation</h3>
+
+<p>Convert between different syntax styles:</p>
+
+<pre><code>
+function convert_to_braces:
+  inputs:
+    indented_code: String
+  outputs:
+    braced_code: String
+  implementation: {
+    // Transform indentation to braces
+    return result
+  }
+</code></pre>
+
+<h2>5.14 Summary</h2>
+
+<p>Programmable syntax is the defining feature of the 1 programming language. While the current implementation provides a foundation through explicit block delimiters, the full vision includes:</p>
+
+<ul>
+<li>Syntax rules as first-class data</li>
+<li>Localized syntax modifications</li>
+<li>Multiple syntax styles coexisting</li>
+<li>Programs that manipulate syntax</li>
+</ul>
+
+<p>This chapter has introduced the concept and shown its current state and future direction. The next chapter explores how programmable syntax enables self-hosting—the ability of 1 to compile itself.</p>
+
+<h2>Exercises</h2>
+
+<p><strong>Exercise 5-1.</strong> Write a function that converts a simple expression from infix notation (a + b) to prefix notation (+ a b).</p>
+
+<p><strong>Exercise 5-2.</strong> Design a syntax rule structure for a hypothetical future version of 1 that supports syntax variables. What fields would it need?</p>
+
+<p><strong>Exercise 5-3.</strong> Write a function that checks whether a string of braces is balanced (every <code>{</code> has a matching <code>}</code>).</p>
+
+<p><strong>Exercise 5-4.</strong> Sketch how you would implement a parser that could use either braces or begin/end keywords based on a parameter.</p>
+
+<p><strong>Exercise 5-5.</strong> Consider the implications of allowing programs to modify their own syntax at runtime. What problems might this create? How could they be prevented?</p>
+
+<p><strong>Exercise 5-6.</strong> Design a notation for mathematical expressions and describe how you would implement a parser for it in 1.</p>
+
+<p><strong>Exercise 5-7.</strong> Write a function that takes code in one style (braced) and adds indentation to make the structure more visible.</p>
+
+<p><strong>Exercise 5-8.</strong> Research homoiconicity in Lisp. How does 1's programmable syntax differ from Lisp's homoiconicity? What can each approach do that the other cannot?</p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <a href="#chapter-4" class="nav-button">← Previous</a>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <a href="#chapter-6" class="nav-button">Next →</a>
+    </div>
+
+
+    <div class="chapter" id="chapter-6">
+<h1>Chapter 6: Self-Hosting and Meta-Compilation</h1>
+
+<p>A programming language achieves self-hosting when it can compile or interpret programs written in itself. This is a significant milestone that proves the language is complete enough for real-world programming tasks, including the complex task of building a compiler.</p>
+
+<p>The 1 programming language has achieved self-hosting through a series of compiler components written entirely in 1. This chapter explores what self-hosting means, how it was achieved, and what it enables.</p>
+
+<h2>6.1 What is Self-Hosting?</h2>
+
+<p>Self-hosting means that a language's compiler (or interpreter) is written in the language itself. Famous examples include:</p>
+
+<ul>
+<li><strong>C</strong>: The C compiler is written in C</li>
+<li><strong>Rust</strong>: The Rust compiler is written in Rust</li>
+<li><strong>Python</strong>: PyPy, a Python interpreter, is written in Python</li>
+</ul>
+
+<p>Self-hosting is significant because:</p>
+
+<ol>
+<li>It proves the language is powerful enough to express complex algorithms</li>
+<li>It validates the language design through practical use</li>
+<li>It enables the language to evolve using itself</li>
+<li>It creates a foundation for meta-programming</li>
+</ul>
+
+<h2>6.2 The Bootstrap Problem</h2>
+
+<p>A self-hosting language faces the "bootstrap problem": if the compiler is written in the language, how do you compile the compiler?</p>
+
+<p>The solution is to bootstrap in stages:</p>
+
+<p><strong>Stage 0</strong>: Write a simple compiler in another language (the bootstrap compiler)</p>
+<p><strong>Stage 1</strong>: Use the bootstrap compiler to compile compiler components written in the target language</p>
+<p><strong>Stage 2</strong>: Eventually, the compiler written in the target language can compile itself</p>
+
+<p>For 1, the bootstrap compiler is written in Python. It compiles 1 programs into bytecode and executes them. This allows us to run compiler components written in 1.</p>
+
+<h2>6.3 The 1 Bootstrap Compiler</h2>
+
+<p>The bootstrap compiler for 1 consists of several components, all written in Python:</p>
+
+<p><strong>Lexer</strong> (<code>bootstrap/lexer.py</code>): Tokenizes 1 source code into a stream of tokens</p>
+
+<p><strong>Parser</strong> (<code>bootstrap/parser.py</code>): Parses tokens into an Abstract Syntax Tree (AST)</p>
+
+<p><strong>Type Checker</strong> (<code>bootstrap/type_checker.py</code>): Verifies type correctness</p>
+
+<p><strong>Code Generator</strong> (<code>bootstrap/codegen.py</code>): Generates stack-based bytecode</p>
+
+<p><strong>Virtual Machine</strong> (<code>bootstrap/vm.py</code>): Executes the bytecode</p>
+
+<p><strong>Built-ins</strong> (<code>bootstrap/one_builtins.py</code>): Provides built-in functions</p>
+
+<p>This bootstrap compiler is complete and can compile any valid 1 program.</p>
+
+<h2>6.4 Self-Hosting Components</h2>
+
+<p>With the bootstrap compiler in place, we can write compiler components in 1 itself. The self-hosting compiler consists of:</p>
+
+<h3>6.4.1 Tokenizer</h3>
+
+<p>The tokenizer, written in 1, processes source code into tokens:</p>
+
+<pre><code>
+function tokenize:
+  inputs:
+    source: String
+  outputs:
+    token_count: Integer
+  implementation: {
+    pos = 0
+    count = 0
+    source_len = len(source)
+
+    while pos &lt; source_len: {
+      c = char_at(source, pos)
+
+      // Skip whitespace
+      if str_eq(c, &quot; &quot;): {
+        pos = pos + 1
+      } else: {
+        // Recognize and count tokens
+        count = count + 1
+        pos = pos + 1
+      }
+    }
+
+    return count
+  }
+</code></pre>
+
+<p>This function demonstrates that 1 can parse 1 source code. It uses built-in string functions to examine characters and identify tokens.</p>
+
+<h3>6.4.2 Expression Evaluator</h3>
+
+<p>The expression evaluator parses and evaluates arithmetic expressions:</p>
+
+<pre><code>
+function evaluate:
+  inputs:
+    expr: String
+  outputs:
+    result: Integer
+  implementation: {
+    // Parse &quot;number operator number&quot;
+    num1 = parse_number(expr, 0)
+    op = get_operator(expr)
+    num2 = parse_number(expr, find_second_number(expr))
+
+    if str_eq(op, &quot;+&quot;): {
+      return num1 + num2
+    }
+    // ... other operators ...
+
+    return 0
+  }
+</code></pre>
+
+<p>This shows that 1 can interpret and execute expressions—a key part of any language implementation.</p>
+
+<h3>6.4.3 Bytecode Virtual Machine</h3>
+
+<p>The bytecode VM, written in 1, executes stack-based bytecode:</p>
+
+<pre><code>
+function execute:
+  inputs:
+    program: String
+  outputs:
+    result: Integer
+  implementation: {
+    stack_0 = 0
+    stack_1 = 0
+    sp = 0
+
+    while running: {
+      op = read_opcode(program)
+
+      if op == OP_PUSH: {
+        val = read_operand(program)
+        // Push value onto stack
+        if sp == 0: {
+          stack_0 = val
+          sp = 1
+        }
+      }
+
+      if op == OP_ADD: {
+        // Pop two values, add them, push result
+        if sp == 2: {
+          stack_0 = stack_0 + stack_1
+          sp = 1
+        }
+      }
+
+      // ... other opcodes ...
+    }
+
+    return stack_0
+  }
+</code></pre>
+
+<p>This demonstrates that 1 can implement execution models—the VM that runs bytecode is itself written in 1.</p>
+
+<h2>6.5 The Self-Hosting Demonstration</h2>
+
+<p>The complete self-hosting demonstration (<code>compiler/self_hosting_demo.one</code>) combines all three components:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    // Tokenize 1 code
+    code = &quot;function add&quot;
+    tokens = count_tokens(code)
+    println(tokens)
+
+    // Evaluate expressions
+    expr = &quot;15 + 27&quot;
+    result = eval_simple(expr)
+    println(result)  // 42
+
+    // Execute bytecode
+    bytecode = &quot;PUSH,10,PUSH,5,ADD&quot;
+    vm_result = run_bytecode(bytecode)
+    println(vm_result)  // 15
+
+    println(&quot;*** SELF-HOSTING ACHIEVED! ***&quot;)
+    return 0
+  }
+</code></pre>
+
+<p>When this program runs, it demonstrates that:</p>
+
+<ol>
+<li>1 can tokenize 1 source code</li>
+<li>1 can evaluate 1 expressions</li>
+<li>1 can execute 1 bytecode</li>
+</ul>
+
+<p>This is self-hosting: 1 processing 1.</p>
+
+<h2>6.6 Running the Self-Hosting Demo</h2>
+
+<p>To run the self-hosting demonstration:</p>
+
+<pre><code>
+python bootstrap/compiler.py compiler/self_hosting_demo.one --run
+</code></pre>
+
+<p>The output confirms that all three components work:</p>
+
+<pre><code>
+========================================
+  1 SELF-HOSTING DEMONSTRATION
+  Programs written in 1, running in 1!
+========================================
+
+[X] Tokenized 1 code in 1
+[X] Evaluated expressions in 1
+[X] Executed bytecode in 1
+
+*** SELF-HOSTING ACHIEVED! ***
+</code></pre>
+
+<h2>6.7 Implications of Self-Hosting</h2>
+
+<p>Self-hosting has several important implications:</p>
+
+<h3>6.7.1 Language Completeness</h3>
+
+<p>Self-hosting proves that 1 is a complete programming language. It can express:</p>
+
+<ul>
+<li>String manipulation (for lexical analysis)</li>
+<li>Complex control flow (for parsing)</li>
+<li>Data structures (for ASTs and symbol tables)</li>
+<li>Algorithms (for code generation and optimization)</li>
+</ul>
+
+<h3>6.7.2 Validation of Design</h3>
+
+<p>Writing a compiler in 1 validates the language design. If the language were missing essential features, we could not write a compiler in it. The fact that we succeeded proves the design is sound.</p>
+
+<h3>6.7.3 Foundation for Evolution</h3>
+
+<p>A self-hosting language can evolve using its own tools. Future improvements to 1 can be written in 1:</p>
+
+<pre><code>
+// Optimization pass written in 1
+function optimize_bytecode:
+  inputs:
+    bytecode: String
+  outputs:
+    optimized: String
+  implementation: {
+    // Constant folding, dead code elimination, etc.
+    return improved_bytecode
+  }
+</code></pre>
+
+<h3>6.7.4 Meta-Programming Capabilities</h3>
+
+<p>Self-hosting enables meta-programming—programs that manipulate programs:</p>
+
+<pre><code>
+// Code generator written in 1
+function generate_parser:
+  inputs:
+    grammar: String
+  outputs:
+    parser_code: String
+  implementation: {
+    // Generate parser code from grammar
+    return generated_code
+  }
+</code></pre>
+
+<h2>6.8 Toward a Full Self-Hosting Compiler</h2>
+
+<p>The current self-hosting components demonstrate the concept, but a full self-hosting compiler would include:</p>
+
+<ol>
+<li><strong>Complete parser</strong>: Generate full ASTs for all 1 constructs</li>
+<li><strong>Type checker</strong>: Verify type correctness</li>
+<li><strong>Code generator</strong>: Produce bytecode for all language features</li>
+<li><strong>Optimizer</strong>: Improve generated code</li>
+<li><strong>Error reporting</strong>: Provide helpful error messages</li>
+</ul>
+
+<p>Each of these can be written in 1, using the foundation we have established.</p>
+
+<h2>6.9 The Fixpoint Test</h2>
+
+<p>The ultimate test of self-hosting is the "fixpoint" test:</p>
+
+<ol>
+<li>Compile the compiler (written in 1) using the bootstrap compiler</li>
+<li>Use that compiled compiler to compile itself</li>
+<li>Verify that the twice-compiled compiler produces identical output</li>
+</ul>
+
+<p>If this test passes, the compiler has reached a fixpoint—it can reproduce itself exactly.</p>
+
+<h2>6.10 Comparison with Other Languages</h2>
+
+<p>Different languages achieved self-hosting in different ways and timescales:</p>
+
+<p><strong>C</strong> (1973): Several years of development to achieve self-hosting</p>
+
+<p><strong>Pascal</strong> (1970s): Bootstrapped using a simplified compiler written in Pascal</p>
+
+<p><strong>Rust</strong> (2010s): Used OCaml for initial development, then rewrote in Rust</p>
+
+<p><strong>1</strong> (2025): Achieved core self-hosting in a single intensive development session</p>
+
+<p>The rapid achievement of self-hosting in 1 was enabled by:</p>
+
+<ul>
+<li>Clear language design from the start</li>
+<li>Focus on essential features</li>
+<li>Programmable syntax that simplified parsing</li>
+<li>Comprehensive built-in function library</li>
+</ul>
+
+<h2>6.11 Future Directions</h2>
+
+<p>With self-hosting established, future development can focus on:</p>
+
+<h3>6.11.1 Full Compiler in 1</h3>
+
+<p>Complete the compiler components:</p>
+
+<pre><code>
+// Complete parser
+function parse:
+  inputs:
+    tokens: String
+  outputs:
+    ast: String
+  implementation: {
+    // Build complete AST
+    return ast_representation
+  }
+</code></pre>
+
+<h3>6.11.2 Optimization Passes</h3>
+
+<p>Add optimization in 1:</p>
+
+<pre><code>
+function optimize:
+  inputs:
+    bytecode: String
+  outputs:
+    optimized: String
+  implementation: {
+    // Constant propagation, dead code elimination, etc.
+    return improved
+  }
+</code></pre>
+
+<h3>6.11.3 Language Extensions</h3>
+
+<p>Extend the language using itself:</p>
+
+<pre><code>
+// New language construct implementation
+function compile_pattern_match:
+  inputs:
+    pattern: String
+  outputs:
+    code: String
+  implementation: {
+    // Generate code for pattern matching
+    return compiled_code
+  }
+</code></pre>
+
+<h2>6.12 Meta-Circular Evaluation</h2>
+
+<p>The self-hosting compiler demonstrates meta-circular evaluation: a program that evaluates programs in its own language. This creates interesting possibilities:</p>
+
+<pre><code>
+// Interpreter written in 1
+function interpret:
+  inputs:
+    code: String
+  outputs:
+    result: String
+  implementation: {
+    tokens = tokenize(code)
+    ast = parse(tokens)
+    result = evaluate(ast)
+    return result
+  }
+</code></pre>
+
+<p>This interpreter could modify its own behavior:</p>
+
+<pre><code>
+// Self-modifying interpreter
+function adaptive_interpret:
+  inputs:
+    code: String
+    performance_feedback: String
+  outputs:
+    result: String
+  implementation: {
+    // Adapt interpretation strategy based on feedback
+    if should_optimize(performance_feedback): {
+      code = optimize(code)
+    }
+    return interpret(code)
+  }
+</code></pre>
+
+<h2>6.13 Summary</h2>
+
+<p>Self-hosting is a major milestone for any programming language. For 1, it demonstrates:</p>
+
+<ul>
+<li>The language is complete and powerful</li>
+<li>The design is sound and practical</li>
+<li>Meta-programming is possible</li>
+<li>The language can evolve using itself</li>
+</ul>
+
+<p>The self-hosting compiler components—tokenizer, expression evaluator, and bytecode VM—prove that 1 can process 1. This foundation enables future development entirely in 1.</p>
+
+<h2>Exercises</h2>
+
+<p><strong>Exercise 6-1.</strong> Study the tokenizer in <code>compiler/tokenizer.one</code>. Extend it to recognize and count different token types separately.</p>
+
+<p><strong>Exercise 6-2.</strong> Write a function in 1 that checks whether parentheses are balanced in an expression.</p>
+
+<p><strong>Exercise 6-3.</strong> Extend the expression evaluator to handle multiplication and division, respecting operator precedence.</p>
+
+<p><strong>Exercise 6-4.</strong> Design a simple bytecode instruction set for a stack machine. Define opcodes for PUSH, POP, ADD, SUB, MUL, DIV, and PRINT.</p>
+
+<p><strong>Exercise 6-5.</strong> Write a function that generates bytecode (as a string) for a simple arithmetic expression.</p>
+
+<p><strong>Exercise 6-6.</strong> Sketch how you would implement a symbol table (for variable names) in 1. What data structures would you need?</p>
+
+<p><strong>Exercise 6-7.</strong> Consider what would be needed to add optimization to the compiler. What transformations would be most valuable?</p>
+
+<p><strong>Exercise 6-8.</strong> Research meta-circular evaluators. How does 1's self-hosting compare to meta-circular evaluators in Lisp or Scheme?</p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <a href="#chapter-5" class="nav-button">← Previous</a>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <a href="#chapter-7" class="nav-button">Next →</a>
+    </div>
+
+
+    <div class="chapter" id="chapter-7">
+<h1>Appendix A: Language Reference Manual</h1>
+
+<p>This appendix is a reference manual for the 1 programming language. It describes the syntax and semantics precisely, though the programmable nature of 1 means that syntax can be extended beyond what is described here.</p>
+
+<h2>A.1 Lexical Conventions</h2>
+
+<h3>A.1.1 Tokens</h3>
+
+<p>There are six classes of tokens: identifiers, keywords, constants, string literals, operators, and other separators. Whitespace (blanks, tabs, newlines) is ignored except as it separates tokens.</p>
+
+<h3>A.1.2 Comments</h3>
+
+<p>Comments begin with <code>//</code> and extend to the end of the line:</p>
+
+<pre><code>
+// This is a comment
+x = 10  // This is also a comment
+</code></pre>
+
+<h3>A.1.3 Identifiers</h3>
+
+<p>An identifier is a sequence of letters, digits, and underscores. The first character must be a letter or underscore. Upper and lower case letters are distinct.</p>
+
+<pre><code>
+identifier:
+    letter (letter | digit | underscore)*
+
+letter:
+    a-z | A-Z
+
+digit:
+    0-9
+
+underscore:
+    _
+</code></pre>
+
+<h3>A.1.4 Keywords</h3>
+
+<p>The following identifiers are reserved as keywords and may not be used as variable or function names:</p>
+
+<pre><code>
+function    inputs      outputs     implementation
+if          else        while       return
+ensure      otherwise   break       continue
+</code></pre>
+
+<p>Note: <code>break</code> and <code>continue</code> are reserved but not currently implemented.</p>
+
+<h3>A.1.5 Constants</h3>
+
+<p>Integer constants consist of a sequence of digits:</p>
+
+<pre><code>
+integer-constant:
+    digit+
+</code></pre>
+
+<p>Floating-point constants contain a decimal point:</p>
+
+<pre><code>
+float-constant:
+    digit+ . digit+
+</code></pre>
+
+<h3>A.1.6 String Literals</h3>
+
+<p>A string literal is a sequence of characters enclosed in double quotes:</p>
+
+<pre><code>
+string-literal:
+    &quot; string-characters &quot;
+
+string-characters:
+    (any character except &quot; or \\ or newline)*
+</code></pre>
+
+<p>Escape sequences:</p>
+<ul>
+<li><code>\"</code> - double quote</li>
+<li><code>\\</code> - backslash</li>
+<li><code>\n</code> - newline</li>
+</ul>
+
+<h2>A.2 Syntax Notation</h2>
+
+<p>In the syntax notation used in this reference:</p>
+
+<ul>
+<li><strong>Italics</strong> denote syntactic categories</li>
+<li><strong>Bold</strong> denotes keywords and literal operators</li>
+<li><code>{ }</code> enclose optional items (not block delimiters in this context)</li>
+<li><code>...</code> denotes repetition</li>
+</ul>
+
+<h2>A.3 Types</h2>
+
+<h3>A.3.1 Basic Types</h3>
+
+<p>The basic data types are:</p>
+
+<p><strong>Integer</strong>: Whole numbers (implementation-defined range)</p>
+<p><strong>Float</strong>: Floating-point numbers (implementation-defined precision)</p>
+<p><strong>String</strong>: Sequence of characters</p>
+<p><strong>Boolean</strong>: Truth values (represented as Integer: 0 for false, non-zero for true)</p>
+<p><strong>List</strong>: Ordered collection of values</p>
+
+<h3>A.3.2 Type Names</h3>
+
+<p>Type names are keywords that denote basic types:</p>
+
+<pre><code>
+type-name:
+    Integer
+    Float
+    String
+    Boolean
+    List
+</code></pre>
+
+<h2>A.4 Expressions</h2>
+
+<h3>A.4.1 Primary Expressions</h3>
+
+<p>Primary expressions are:</p>
+
+<pre><code>
+primary-expression:
+    identifier
+    constant
+    string-literal
+    ( expression )
+</code></pre>
+
+<h3>A.4.2 Function Calls</h3>
+
+<pre><code>
+function-call:
+    identifier ( argument-list )
+
+argument-list:
+    expression
+    argument-list , expression
+</code></pre>
+
+<h3>A.4.3 Unary Operators</h3>
+
+<pre><code>
+unary-expression:
+    - primary-expression
+    ! primary-expression
+</code></pre>
+
+<p>The unary <code>-</code> operator negates its operand. The <code>!</code> operator returns 1 if the operand is 0, and 0 otherwise.</p>
+
+<h3>A.4.4 Binary Operators</h3>
+
+<p>Binary operators group left to right:</p>
+
+<pre><code>
+multiplicative-expression:
+    unary-expression
+    multiplicative-expression * unary-expression
+    multiplicative-expression / unary-expression
+
+additive-expression:
+    multiplicative-expression
+    additive-expression + multiplicative-expression
+    additive-expression - multiplicative-expression
+
+relational-expression:
+    additive-expression
+    relational-expression &lt; additive-expression
+    relational-expression &gt; additive-expression
+    relational-expression &lt;= additive-expression
+    relational-expression &gt;= additive-expression
+
+equality-expression:
+    relational-expression
+    equality-expression == relational-expression
+    equality-expression != relational-expression
+
+logical-and-expression:
+    equality-expression
+    logical-and-expression &amp;&amp; equality-expression
+
+logical-or-expression:
+    logical-and-expression
+    logical-or-expression || logical-and-expression
+</code></pre>
+
+<h3>A.4.5 Assignment Expression</h3>
+
+<pre><code>
+assignment-expression:
+    identifier = expression
+</code></pre>
+
+<p>Assignment evaluates the right-hand expression and stores the result in the variable named by the identifier.</p>
+
+<h2>A.5 Statements</h2>
+
+<h3>A.5.1 Expression Statement</h3>
+
+<pre><code>
+expression-statement:
+    expression
+</code></pre>
+
+<h3>A.5.2 Compound Statement</h3>
+
+<pre><code>
+compound-statement:
+    { statement-list }
+
+statement-list:
+    statement
+    statement-list statement
+</code></pre>
+
+<h3>A.5.3 If Statement</h3>
+
+<pre><code>
+if-statement:
+    if expression : compound-statement
+    if expression : compound-statement else : compound-statement
+</code></pre>
+
+<h3>A.5.4 While Statement</h3>
+
+<pre><code>
+while-statement:
+    while expression : compound-statement
+</code></pre>
+
+<h3>A.5.5 Return Statement</h3>
+
+<pre><code>
+return-statement:
+    return expression
+</code></pre>
+
+<h3>A.5.6 Ensure-Otherwise Statement</h3>
+
+<pre><code>
+ensure-otherwise-statement:
+    ensure expression : compound-statement otherwise : compound-statement
+</code></pre>
+
+<h2>A.6 Declarations</h2>
+
+<h3>A.6.1 Function Declarations</h3>
+
+<pre><code>
+function-declaration:
+    function identifier : inputs-section outputs-section implementation-section
+
+inputs-section:
+    inputs : parameter-list
+
+parameter-list:
+    parameter-declaration
+    parameter-list parameter-declaration
+
+parameter-declaration:
+    identifier : type-name
+
+outputs-section:
+    outputs : result-list
+
+result-list:
+    result-declaration
+    result-list result-declaration
+
+result-declaration:
+    identifier : type-name
+
+implementation-section:
+    implementation : compound-statement
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>
+function example:
+  inputs:
+    x: Integer
+    y: Integer
+  outputs:
+    result: Integer
+  implementation: {
+    result = x + y
+    return result
+  }
+</code></pre>
+
+<h3>A.6.2 Variable Declarations</h3>
+
+<p>Variables are declared implicitly by assignment:</p>
+
+<pre><code>
+variable-declaration:
+    identifier = expression
+</code></pre>
+
+<p>The type of the variable is inferred from the type of the expression.</p>
+
+<h2>A.7 Program Structure</h2>
+
+<p>A 1 program consists of a sequence of function declarations:</p>
+
+<pre><code>
+program:
+    function-declaration-list
+
+function-declaration-list:
+    function-declaration
+    function-declaration-list function-declaration
+</code></pre>
+
+<p>One function must be named <code>main</code>:</p>
+
+<pre><code>
+function main:
+  outputs:
+    exit_code: Integer
+  implementation: {
+    // program body
+    return 0
+  }
+</code></pre>
+
+<h2>A.8 Scope Rules</h2>
+
+<p>The scope of a function parameter or local variable is the function in which it is declared.</p>
+
+<p>Function names are in scope throughout the program (subject to ordering constraints in the current implementation).</p>
+
+<h2>A.9 Operator Precedence</h2>
+
+<p>Operators are listed in order of decreasing precedence:</p>
+
+<p>| Precedence | Operators | Associativity |</p>
+<p>|------------|-----------|---------------|</p>
+<p>| 1 (highest) | <code>( )</code> | - |</p>
+<p>| 2 | <code>-</code> (unary), <code>!</code> | right to left |</p>
+<p>| 3 | <code>*</code>, <code>/</code> | left to right |</p>
+<p>| 4 | <code>+</code>, <code>-</code> | left to right |</p>
+<p>| 5 | <code><</code>, <code><=</code>, <code>></code>, <code>>=</code> | left to right |</p>
+<p>| 6 | <code>==</code>, <code>!=</code> | left to right |</p>
+<p>| 7 | <code>&&</code> | left to right |</p>
+<p>| 8 | <code>||</code> | left to right |</p>
+<p>| 9 (lowest) | <code>=</code> | right to left |</p>
+
+<h2>A.10 Built-in Functions</h2>
+
+<p>The following functions are provided by the runtime environment:</p>
+
+<h3>A.10.1 String Functions</h3>
+
+<p><strong>len(s: String) -> Integer</strong></p>
+<p>Returns the length of string s.</p>
+
+<p><strong>substr(s: String, start: Integer, end: Integer) -> String</strong></p>
+<p>Returns the substring of s from index start (inclusive) to end (exclusive).</p>
+
+<p><strong>char_at(s: String, index: Integer) -> String</strong></p>
+<p>Returns the character at position index as a single-character string.</p>
+
+<p><strong>str_concat(s1: String, s2: String) -> String</strong></p>
+<p>Returns the concatenation of s1 and s2.</p>
+
+<p><strong>str_eq(s1: String, s2: String) -> Integer</strong></p>
+<p>Returns 1 if s1 and s2 are equal, 0 otherwise.</p>
+
+<p><strong>str_to_int(s: String) -> Integer</strong></p>
+<p>Converts a string to an integer.</p>
+
+<p><strong>int_to_str(n: Integer) -> String</strong></p>
+<p>Converts an integer to a string.</p>
+
+<h3>A.10.2 Character Testing Functions</h3>
+
+<p><strong>is_digit(c: String) -> Integer</strong></p>
+<p>Returns 1 if c is a single-character string containing a digit, 0 otherwise.</p>
+
+<p><strong>is_alpha(c: String) -> Integer</strong></p>
+<p>Returns 1 if c is a single-character string containing a letter, 0 otherwise.</p>
+
+<p><strong>is_alnum(c: String) -> Integer</strong></p>
+<p>Returns 1 if c is a single-character string containing a letter or digit, 0 otherwise.</p>
+
+<h3>A.10.3 List Functions</h3>
+
+<p><strong>list_append(list: List, item: Any) -> List</strong></p>
+<p>Appends item to list and returns the modified list.</p>
+
+<p><strong>list_get(list: List, index: Integer) -> Any</strong></p>
+<p>Returns the item at position index in list.</p>
+
+<p><strong>list_set(list: List, index: Integer, value: Any) -> List</strong></p>
+<p>Sets the item at position index to value and returns the modified list.</p>
+
+<h3>A.10.4 I/O Functions</h3>
+
+<p><strong>print(s: String) -> Integer</strong></p>
+<p>Prints string s without a newline. Returns 0.</p>
+
+<p><strong>println(s: String) -> Integer</strong></p>
+<p>Prints string s followed by a newline. Returns 0.</p>
+
+<p><strong>println(n: Integer) -> Integer</strong></p>
+<p>Prints integer n followed by a newline. Returns 0.</p>
+
+<h2>A.11 Compilation and Execution</h2>
+
+<p>A 1 program is compiled to stack-based bytecode and executed by a virtual machine.</p>
+
+<p>To compile and run a program:</p>
+
+<pre><code>
+python bootstrap/compiler.py program.one --run
+</code></pre>
+
+<p>To compile without running:</p>
+
+<pre><code>
+python bootstrap/compiler.py program.one -o program.1bc
+</code></pre>
+
+<p>To disassemble bytecode:</p>
+
+<pre><code>
+python bootstrap/compiler.py program.one --disassemble
+</code></pre>
+
+<h2>A.12 Undefined Behavior</h2>
+
+<p>The following behaviors are undefined:</p>
+
+<ul>
+<li>Division by zero</li>
+<li>Array/string index out of bounds</li>
+<li>Type errors (attempting to use a value as the wrong type)</li>
+<li>Calling a function with the wrong number of arguments</li>
+<li>Infinite recursion leading to stack overflow</li>
+</ul>
+
+<h2>A.13 Implementation-Defined Behavior</h2>
+
+<p>The following behaviors are implementation-defined:</p>
+
+<ul>
+<li>Range and precision of Integer and Float types</li>
+<li>Maximum string length</li>
+<li>Maximum recursion depth</li>
+<li>Maximum program size</li>
+</ul>
+
+<h2>A.14 Differences from Previous Versions</h2>
+
+<p>This is the initial version of the 1 language. Future versions may include:</p>
+
+<ul>
+<li>Module system</li>
+<li>Global variables</li>
+<li>Multiple return values</li>
+<li>Pattern matching</li>
+<li>Syntax variable declarations</li>
+<li>With-syntax blocks</li>
+<li>Additional control flow constructs</li>
+</ul>
+
+<h2>A.15 Summary</h2>
+
+<p>This reference manual has defined:</p>
+
+<ul>
+<li>Lexical structure (tokens, keywords, constants)</li>
+<li>Types (Integer, Float, String, Boolean, List)</li>
+<li>Expressions and operators</li>
+<li>Statements (if, while, ensure-otherwise, return)</li>
+<li>Function declarations</li>
+<li>Program structure</li>
+<li>Built-in functions</li>
+</ul>
+
+<p>For examples and explanations, see Chapters 1-6 of this book.</p>
+
+    </div>
+
+    <div class="nav-buttons">
+        <a href="#chapter-6" class="nav-button">← Previous</a>
+        <a href="#top" class="nav-button">↑ Top</a>
+        <span></span>
+    </div>
+
+
+    <hr>
+    <div style="text-align: center; padding: 2em; color: #888;">
+        <p><strong>The 1 Programming Language</strong></p>
+        <p>Version 1.0 • 2025</p>
+        <p><a href="https://github.com/haxidermist/1lang">GitHub Repository</a></p>
+        <p style="margin-top: 1em; font-style: italic;">"In 1, code is data, syntax is data, and now 1 can compile 1."</p>
+    </div>
+
     <a href="#top" class="back-to-top" id="backToTop" style="display:none;">↑</a>
 
     <script>
-        // Configure marked
-        marked.setOptions({
-            breaks: true,
-            gfm: true,
-            headerIds: true
+        // Show back-to-top button on scroll
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
         });
-
-        // Book chapters in order
-        const chapters = [
-            { file: '00-preface.md', title: 'Preface' },
-            { file: '01-tutorial-introduction.md', title: 'Chapter 1: A Tutorial Introduction' },
-            { file: '02-types-operators-expressions.md', title: 'Chapter 2: Types, Operators, and Expressions' },
-            { file: '03-control-flow.md', title: 'Chapter 3: Control Flow' },
-            { file: '04-functions-program-structure.md', title: 'Chapter 4: Functions and Program Structure' },
-            { file: '05-programmable-syntax.md', title: 'Chapter 5: Programmable Syntax' },
-            { file: '06-self-hosting.md', title: 'Chapter 6: Self-Hosting and Meta-Compilation' },
-            { file: 'appendix-reference.md', title: 'Appendix A: Language Reference Manual' }
-        ];
-
-        async function loadChapter(file) {
-            try {
-                const response = await fetch(file);
-                if (!response.ok) throw new Error(`Failed to load ${file}`);
-                return await response.text();
-            } catch (error) {
-                console.error(`Error loading ${file}:`, error);
-                return `## Error\n\nFailed to load ${file}. Please check that the file exists.`;
-            }
-        }
-
-        async function loadBook() {
-            const contentDiv = document.getElementById('content');
-            const loadingDiv = document.getElementById('loading');
-
-            // Create book header
-            let html = `
-                <div id="top" class="book-header">
-                    <h1 class="book-title">The 1 Programming Language</h1>
-                    <p class="book-subtitle">A Revolutionary Language with Programmable Syntax</p>
-                    <p class="book-meta">In the style of "The C Programming Language" by Kernighan & Ritchie</p>
-                </div>
-
-                <div class="toc">
-                    <h2>Table of Contents</h2>
-                    <ul>
-                        ${chapters.map((ch, idx) =>
-                            `<li><a href="#chapter-${idx}">${ch.title}</a></li>`
-                        ).join('')}
-                    </ul>
-                </div>
-            `;
-
-            // Load and render each chapter
-            for (let i = 0; i < chapters.length; i++) {
-                const chapter = chapters[i];
-                const markdown = await loadChapter(chapter.file);
-                const rendered = marked.parse(markdown);
-
-                html += `
-                    <div class="chapter" id="chapter-${i}">
-                        ${rendered}
-                    </div>
-                `;
-
-                // Add navigation buttons between chapters
-                if (i < chapters.length - 1) {
-                    html += `
-                        <div class="nav-buttons">
-                            ${i > 0 ? `<a href="#chapter-${i-1}" class="nav-button">← Previous</a>` : '<span></span>'}
-                            <a href="#top" class="nav-button">↑ Top</a>
-                            <a href="#chapter-${i+1}" class="nav-button">Next →</a>
-                        </div>
-                    `;
-                }
-            }
-
-            // Add final navigation
-            html += `
-                <div class="nav-buttons">
-                    <a href="#chapter-${chapters.length-2}" class="nav-button">← Previous</a>
-                    <a href="#top" class="nav-button">↑ Top</a>
-                    <span></span>
-                </div>
-            `;
-
-            // Add footer
-            html += `
-                <hr>
-                <div style="text-align: center; padding: 2em; color: #888;">
-                    <p><strong>The 1 Programming Language</strong></p>
-                    <p>Version 1.0 • 2025</p>
-                    <p><a href="https://github.com/haxidermist/1lang">GitHub Repository</a></p>
-                    <p style="margin-top: 1em; font-style: italic;">"In 1, code is data, syntax is data, and now 1 can compile 1."</p>
-                </div>
-            `;
-
-            contentDiv.innerHTML = html;
-            loadingDiv.style.display = 'none';
-            contentDiv.style.display = 'block';
-
-            // Show back-to-top button on scroll
-            window.addEventListener('scroll', function() {
-                const backToTop = document.getElementById('backToTop');
-                if (window.pageYOffset > 300) {
-                    backToTop.style.display = 'block';
-                } else {
-                    backToTop.style.display = 'none';
-                }
-            });
-        }
-
-        // Load the book when page loads
-        window.addEventListener('DOMContentLoaded', loadBook);
     </script>
 </body>
 </html>
