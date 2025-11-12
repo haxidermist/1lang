@@ -100,6 +100,26 @@ pandoc complete-book.md -o the-1-programming-language.epub --toc
 pandoc complete-book.md -o the-1-programming-language.html -s --toc
 ```
 
+## Maintaining and Updating the Book
+
+If you need to edit or update chapters:
+
+**📋 See the complete guide: [MAINTENANCE.md](MAINTENANCE.md)**
+
+**Quick workflow:**
+1. Edit markdown files (e.g., `01-tutorial-introduction.md`)
+2. Regenerate HTML: `python3 generate_html.py`
+3. Test locally: Open `index.html` in browser
+4. Commit and push changes
+
+The maintenance guide covers:
+- Editing chapters and markdown conventions
+- Regenerating the static HTML book
+- Testing locally before publishing
+- Adding new chapters
+- Troubleshooting common issues
+- Best practices and workflows
+
 ## Contributing
 
 Found a typo or error? Suggestions for improvements?
